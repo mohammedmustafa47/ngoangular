@@ -1,0 +1,7 @@
+{
+  "name": "ngoangular",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
