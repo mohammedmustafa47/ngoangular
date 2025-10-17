@@ -1,0 +1,173 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/donor-dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Donate Food</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="page-container">
+    
+    <!-- Header Section -->
+    <div class="header-section">
+      <div class="header-icon">
+        <ion-icon name="heart-circle"></ion-icon>
+      </div>
+      <h1>Make a Donation</h1>
+      <p class="subtitle">Help feed those in need by donating surplus food</p>
+    </div>
+
+    <!-- Form Card -->
+    <ion-card class="form-card">
+      <div class="card-header">
+        <ion-icon name="create-outline"></ion-icon>
+        <h2>Donation Details</h2>
+      </div>
+
+      <ion-card-content>
+        <form (ngSubmit)="SaveFood()">
+          
+          <!-- Food Name -->
+          <div class="form-group">
+            <ion-item lines="none" class="custom-item">
+              <ion-icon name="fast-food-outline" slot="start" color="primary"></ion-icon>
+              <ion-label position="floating">Food Name *</ion-label>
+              <ion-input 
+                type="text" 
+                [(ngModel)]="donationData.item_name" 
+                name="food_name"
+                placeholder="e.g., Rice, Vegetables, Cooked Meals"
+                required>
+              </ion-input>
+            </ion-item>
+          </div>
+
+          <!-- Quantity -->
+          <div class="form-group">
+            <ion-item lines="none" class="custom-item">
+              <ion-icon name="scale-outline" slot="start" color="primary"></ion-icon>
+              <ion-label position="floating">Quantity *</ion-label>
+              <ion-input 
+                type="text" 
+                [(ngModel)]="donationData.quantity" 
+                name="quantity"
+                placeholder="e.g., 5 kg, 10 boxes"
+                required>
+              </ion-input>
+            </ion-item>
+          </div>
+
+          <!-- Pickup Location -->
+          <div class="form-group">
+            <ion-item lines="none" class="custom-item">
+              <ion-icon name="location-outline" slot="start" color="primary"></ion-icon>
+              <ion-label position="floating">Pickup Location *</ion-label>
+              <ion-input 
+                type="text" 
+                [(ngModel)]="donationData.pickup_address" 
+                name="pickup_location"
+                placeholder="Enter your address"
+                required>
+              </ion-input>
+            </ion-item>
+          </div>
+
+          <!-- Contact Number -->
+          <div class="form-group">
+            <ion-item lines="none" class="custom-item">
+              <ion-icon name="call-outline" slot="start" color="primary"></ion-icon>
+              <ion-label position="floating">Contact Number *</ion-label>
+              <ion-input 
+                type="tel" 
+                [(ngModel)]="donationData.contact_number" 
+                name="contact_number"
+                placeholder="Your phone number"
+                required>
+              </ion-input>
+            </ion-item>
+          </div>
+
+          <!-- Description -->
+          <div class="form-group">
+            <ion-item lines="none" class="custom-item textarea-item">
+              <ion-icon name="document-text-outline" slot="start" color="primary"></ion-icon>
+              <ion-label position="floating">Description</ion-label>
+              <ion-textarea 
+                [(ngModel)]="donationData.description" 
+                name="description"
+                rows="4"
+                placeholder="Additional details about the donation">
+              </ion-textarea>
+            </ion-item>
+          </div>
+
+          <!-- Form Info -->
+          <div class="form-info">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <p>Fields marked with * are required. Please ensure all information is accurate.</p>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="action-buttons">
+            <!-- Submit Button -->
+            <ion-button 
+              expand="block" 
+              type="submit"
+              size="large"
+              class="submit-button">
+              <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+              {{ donationData.id ? 'Update Donation' : 'Submit Donation' }}
+            </ion-button>
+
+            <!-- Reset Button -->
+            <ion-button 
+              expand="block" 
+              fill="outline" 
+              color="medium"
+              size="large"
+              (click)="resetForm()"
+              type="button"
+              class="reset-button">
+              <ion-icon name="refresh-outline" slot="start"></ion-icon>
+              Clear Form
+            </ion-button>
+          </div>
+
+        </form>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Help Section -->
+    <div class="help-section">
+      <ion-card class="info-card">
+        <ion-card-content>
+          <div class="info-header">
+            <ion-icon name="help-circle-outline" color="primary"></ion-icon>
+            <h3>How it works</h3>
+          </div>
+          <ul class="help-list">
+            <li>
+              <ion-icon name="checkmark-circle" color="success"></ion-icon>
+              <span>Fill in the donation details</span>
+            </li>
+            <li>
+              <ion-icon name="checkmark-circle" color="success"></ion-icon>
+              <span>Our volunteers will be notified</span>
+            </li>
+            <li>
+              <ion-icon name="checkmark-circle" color="success"></ion-icon>
+              <span>Food will be picked up at your location</span>
+            </li>
+            <li>
+              <ion-icon name="checkmark-circle" color="success"></ion-icon>
+              <span>Track your donation status in history</span>
+            </li>
+          </ul>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+  </div>
+</ion-content>

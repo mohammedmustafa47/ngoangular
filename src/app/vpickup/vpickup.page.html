@@ -1,0 +1,203 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/volunteer-dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Available Pickups</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="GetDonationList()">
+        <ion-icon name="refresh-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="page-container">
+
+    <!-- Header Section -->
+    <div class="header-section">
+      <h1>🚴 Active Pickups</h1>
+      <p class="subtitle">Pick up and deliver food donations to those in need</p>
+
+      <!-- Stats Summary -->
+      <div class="stats-grid" *ngIf="DonationList && DonationList.length > 0">
+        <div class="stat-card total">
+          <ion-icon name="bicycle-outline"></ion-icon>
+          <div class="stat-info">
+            <h3>{{DonationList.length}}</h3>
+            <p>Active Tasks</p>
+          </div>
+        </div>
+        <div class="stat-card pending">
+          <ion-icon name="time-outline"></ion-icon>
+          <div class="stat-info">
+            <h3>{{getStatusCount('pending')}}</h3>
+            <p>Awaiting Pickup</p>
+          </div>
+        </div>
+        <div class="stat-card picked">
+          <ion-icon name="cube-outline"></ion-icon>
+          <div class="stat-info">
+            <h3>{{getStatusCount('picked')}}</h3>
+            <p>In Transit</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Donations Container -->
+    <div class="pickups-container">
+
+      <!-- Empty State -->
+      <div *ngIf="!DonationList || DonationList.length === 0" class="empty-state">
+        <ion-icon name="checkmark-done-outline"></ion-icon>
+        <h3>No Active Pickups</h3>
+        <p>Great work! All donations have been completed.</p>
+        <ion-button routerLink="/vhistory" expand="block" fill="outline" class="cta-button">
+          <ion-icon name="time-outline" slot="start"></ion-icon>
+          View History
+        </ion-button>
+      </div>
+
+      <!-- Pickup Cards -->
+      <ion-card *ngFor="let donationlist of DonationList" class="pickup-card">
+        
+        <!-- Card Header with Status Badge -->
+        <div class="card-header" [class.pending-header]="donationlist.status === 'pending'" [class.picked-header]="donationlist.status === 'picked'">
+          <div class="header-left">
+            <ion-icon [name]="donationlist.status === 'pending' ? 'fast-food' : 'bicycle'" class="food-icon"></ion-icon>
+            <div class="food-info">
+              <h2>{{ donationlist.item_name || donationlist.food_name }}</h2>
+              <p class="donation-date">
+                <ion-icon name="calendar-outline"></ion-icon>
+                {{ donationlist.created_at | date:'MMM dd, yyyy - hh:mm a' }}
+              </p>
+            </div>
+          </div>
+          <ion-badge 
+            [color]="donationlist.status === 'pending' ? 'warning' : 'primary'"
+            class="status-badge">
+            <ion-icon [name]="donationlist.status === 'pending' ? 'time-outline' : 'bicycle-outline'"></ion-icon>
+            {{ donationlist.status === 'picked' ? 'In Transit' : donationlist.status | titlecase }}
+          </ion-badge>
+        </div>
+
+        <ion-card-content>
+          
+          <!-- Main Info Section -->
+          <div class="info-section">
+            <h3 class="section-title">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              Donation Details
+            </h3>
+            <div class="info-grid">
+              <div class="info-item">
+                <ion-icon name="scale-outline"></ion-icon>
+                <div>
+                  <span class="label">Quantity</span>
+                  <span class="value">{{ donationlist.quantity }}</span>
+                </div>
+              </div>
+
+              <div class="info-item">
+                <ion-icon name="person-outline"></ion-icon>
+                <div>
+                  <span class="label">Donor Name</span>
+                  <span class="value">{{ donationlist.donor_name || 'N/A' }}</span>
+                </div>
+              </div>
+
+              <div class="info-item">
+                <ion-icon name="call-outline"></ion-icon>
+                <div>
+                  <span class="label">Contact Number</span>
+                  <span class="value">
+                    <a href="tel:{{donationlist.contact_number}}" class="phone-link">
+                      {{ donationlist.contact_number || 'N/A' }}
+                    </a>
+                  </span>
+                </div>
+              </div>
+
+              <div class="info-item full-width">
+                <ion-icon name="location-outline"></ion-icon>
+                <div>
+                  <span class="label">Pickup Address</span>
+                  <span class="value address">{{ donationlist.pickup_address || donationlist.pickup_location || 'N/A' }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Description (Full Width) -->
+            <div class="info-item full-width" *ngIf="donationlist.description">
+              <ion-icon name="document-text-outline"></ion-icon>
+              <div>
+                <span class="label">Description</span>
+                <span class="value description">{{ donationlist.description }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Instructions Box -->
+          <div class="instructions-box" *ngIf="donationlist.status === 'pending'">
+            <ion-icon name="bulb-outline"></ion-icon>
+            <div>
+              <strong>Next Step:</strong>
+              <p>Click "Pick Up" when you arrive at the pickup location and collect the donation.</p>
+            </div>
+          </div>
+
+          <div class="instructions-box in-transit" *ngIf="donationlist.status === 'picked'">
+            <ion-icon name="navigate-outline"></ion-icon>
+            <div>
+              <strong>In Transit:</strong>
+              <p>Deliver the donation to recipients and mark as delivered when complete.</p>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="action-section">
+            <!-- Pick Up Button (for pending donations) -->
+            <ion-button 
+              *ngIf="donationlist.status === 'pending'" 
+              expand="block"
+              size="large"
+              color="success"
+              class="action-button pickup-button"
+              (click)="pickDonation(donationlist.id)">
+              <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+              Pick Up This Donation
+            </ion-button>
+
+            <!-- Mark as Delivered & Cancel Buttons (for picked donations) -->
+            <div *ngIf="donationlist.status === 'picked'" class="action-buttons">
+              <ion-button 
+                expand="block"
+                size="large"
+                color="primary"
+                class="action-button deliver-button"
+                (click)="markAsDelivered(donationlist.id)">
+                <ion-icon name="checkmark-done-outline" slot="start"></ion-icon>
+                Mark as Delivered
+              </ion-button>
+              
+              <ion-button 
+                expand="block"
+                size="large"
+                color="danger"
+                fill="outline"
+                class="action-button cancel-button"
+                (click)="cancelDonation(donationlist.id)">
+                <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+                Cancel Pickup
+              </ion-button>
+            </div>
+          </div>
+
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+  </div>
+</ion-content>

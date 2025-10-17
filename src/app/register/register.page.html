@@ -1,0 +1,152 @@
+<ion-content [fullscreen]="true">
+  <div class="auth-container">
+    
+    <!-- Logo/Header Section -->
+    <div class="auth-header">
+      <div class="logo-circle">
+        <ion-icon name="heart-circle"></ion-icon>
+      </div>
+      <h1>Join Us Today</h1>
+      <p class="subtitle">Create an account to start making a difference</p>
+    </div>
+
+    <!-- Registration Form Card -->
+    <div class="auth-card">
+      <div class="card-header">
+        <ion-icon name="person-add-outline"></ion-icon>
+        <h2>Create Account</h2>
+      </div>
+
+      <form (ngSubmit)="onRegister()">
+        
+        <!-- Username Field -->
+        <div class="form-group">
+          <ion-item lines="none" class="custom-item">
+            <ion-icon name="person-outline" slot="start" color="primary"></ion-icon>
+            <ion-label position="floating">Username *</ion-label>
+            <ion-input 
+              type="text" 
+              name="username" 
+              [(ngModel)]="Registerobj.username" 
+              placeholder="Choose a username"
+              required>
+            </ion-input>
+          </ion-item>
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-group">
+          <ion-item lines="none" class="custom-item">
+            <ion-icon name="mail-outline" slot="start" color="primary"></ion-icon>
+            <ion-label position="floating">Email Address *</ion-label>
+            <ion-input 
+              type="email" 
+              name="email" 
+              [(ngModel)]="Registerobj.email"
+              placeholder="your@email.com"
+              required>
+            </ion-input>
+          </ion-item>
+        </div>
+
+        <!-- Role Selection -->
+        <div class="form-group">
+          <ion-item lines="none" class="custom-item">
+            <ion-icon name="shield-outline" slot="start" color="primary"></ion-icon>
+            <ion-label position="floating">Select Your Role *</ion-label>
+            <ion-select 
+              name="role" 
+              [(ngModel)]="Registerobj.role"
+              placeholder="Choose your role"
+              interface="action-sheet"
+              required>
+              <ion-select-option value="donor">
+                <ion-icon name="heart"></ion-icon> Donor
+              </ion-select-option>
+              <ion-select-option value="volunteer">
+                <ion-icon name="bicycle"></ion-icon> Volunteer
+              </ion-select-option>
+              <ion-select-option value="admin">
+                <ion-icon name="shield-checkmark"></ion-icon> Admin
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </div>
+
+        <!-- Role Info Box -->
+        <div class="role-info" *ngIf="Registerobj.role">
+          <ion-icon [name]="getRoleIcon()" [color]="getRoleColor()"></ion-icon>
+          <div>
+            <strong>{{ getRoleTitle() }}</strong>
+            <p>{{ getRoleDescription() }}</p>
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+          <ion-item lines="none" class="custom-item">
+            <ion-icon name="lock-closed-outline" slot="start" color="primary"></ion-icon>
+            <ion-label position="floating">Password *</ion-label>
+            <ion-input 
+              [type]="showPassword ? 'text' : 'password'" 
+              name="password" 
+              [(ngModel)]="Registerobj.password"
+              placeholder="Enter a secure password"
+              required>
+            </ion-input>
+            <ion-button 
+              slot="end" 
+              fill="clear" 
+              (click)="showPassword = !showPassword">
+              <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </div>
+
+        <!-- Terms & Conditions -->
+        <div class="terms-box">
+          <ion-checkbox [(ngModel)]="acceptedTerms" name="terms"></ion-checkbox>
+          <label>
+            I agree to the <a href="#" (click)="$event.preventDefault()">Terms & Conditions</a> 
+            and <a href="#" (click)="$event.preventDefault()">Privacy Policy</a>
+          </label>
+        </div>
+
+        <!-- Register Button -->
+        <ion-button 
+          expand="block" 
+          type="submit"
+          size="large"
+          class="auth-button"
+          [disabled]="!acceptedTerms || !Registerobj.username || !Registerobj.email || !Registerobj.role || !Registerobj.password">
+          <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+          Create Account
+        </ion-button>
+
+      </form>
+
+      <!-- Divider -->
+      <div class="divider">
+        <span>Already have an account?</span>
+      </div>
+
+      <!-- Login Link -->
+      <ion-button 
+        expand="block" 
+        fill="outline" 
+        size="large"
+        routerLink="/login"
+        class="secondary-button">
+        <ion-icon name="log-in-outline" slot="start"></ion-icon>
+        Sign In
+      </ion-button>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="auth-footer">
+      <p>&copy; 2025 NGO Food Donation. Making a difference together.</p>
+    </div>
+
+  </div>
+</ion-content>

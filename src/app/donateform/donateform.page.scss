@@ -1,0 +1,347 @@
+// Page Container
+.page-container {
+  padding: 16px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+// Content Background
+ion-content {
+  --background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+}
+
+// Header Section
+.header-section {
+  text-align: center;
+  padding: 24px 16px;
+  margin-bottom: 24px;
+
+  .header-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 16px;
+    background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(56, 128, 255, 0.3);
+    animation: pulse 2s ease-in-out infinite;
+
+    ion-icon {
+      font-size: 48px;
+      color: white;
+    }
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--ion-color-dark);
+    margin: 0 0 8px 0;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: var(--ion-color-medium);
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+// Pulse Animation
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 4px 16px rgba(56, 128, 255, 0.3);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(56, 128, 255, 0.4);
+  }
+}
+
+// Form Card
+.form-card {
+  margin: 0 0 24px 0;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+
+  .card-header {
+    background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: white;
+
+    ion-icon {
+      font-size: 28px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0;
+      color: white;
+    }
+  }
+
+  ion-card-content {
+    padding: 24px;
+  }
+}
+
+// Form Groups
+.form-group {
+  margin-bottom: 20px;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+// Custom Items
+.custom-item {
+  --background: white;
+  --border-radius: 12px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --inner-padding-end: 0;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  margin-bottom: 0;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  &.item-has-focus {
+    box-shadow: 0 4px 16px rgba(56, 128, 255, 0.2);
+    border: 2px solid var(--ion-color-primary);
+  }
+
+  ion-icon {
+    font-size: 22px;
+    margin-right: 12px;
+  }
+
+  ion-label {
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  ion-input,
+  ion-textarea {
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    font-size: 15px;
+  }
+
+  &.textarea-item {
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+    align-items: flex-start;
+
+    ion-icon {
+      margin-top: 8px;
+    }
+
+    ion-textarea {
+      min-height: 120px;
+    }
+  }
+}
+
+// Form Info
+.form-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 16px;
+  background: rgba(56, 128, 255, 0.08);
+  border-radius: 12px;
+  margin: 24px 0 20px 0;
+
+  ion-icon {
+    font-size: 22px;
+    color: var(--ion-color-primary);
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  p {
+    font-size: 13px;
+    color: var(--ion-color-medium-shade);
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+// Action Buttons
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+
+  ion-button {
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    --border-radius: 12px;
+
+    &.submit-button {
+      --background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
+      box-shadow: 0 4px 12px rgba(56, 128, 255, 0.3);
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(56, 128, 255, 0.4);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+
+    &.reset-button {
+      --border-width: 2px;
+      
+      &:hover {
+        --background: var(--ion-color-light);
+      }
+    }
+  }
+}
+
+// Help Section
+.help-section {
+  margin-bottom: 24px;
+
+  .info-card {
+    margin: 0;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    background: white;
+
+    ion-card-content {
+      padding: 20px;
+    }
+
+    .info-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+
+      ion-icon {
+        font-size: 28px;
+      }
+
+      h3 {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--ion-color-dark);
+        margin: 0;
+      }
+    }
+
+    .help-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 10px 0;
+        font-size: 14px;
+        color: var(--ion-color-medium-shade);
+
+        ion-icon {
+          font-size: 20px;
+          margin-top: 2px;
+          flex-shrink: 0;
+        }
+
+        span {
+          flex: 1;
+          line-height: 1.5;
+        }
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .header-section {
+    padding: 20px 12px;
+
+    .header-icon {
+      width: 70px;
+      height: 70px;
+
+      ion-icon {
+        font-size: 42px;
+      }
+    }
+
+    h1 {
+      font-size: 24px;
+    }
+  }
+
+  .form-card {
+    ion-card-content {
+      padding: 20px 16px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .page-container {
+    padding: 12px;
+  }
+
+  .header-section {
+    .header-icon {
+      width: 60px;
+      height: 60px;
+
+      ion-icon {
+        font-size: 36px;
+      }
+    }
+
+    h1 {
+      font-size: 22px;
+    }
+  }
+
+  .form-card {
+    .card-header {
+      padding: 16px;
+
+      ion-icon {
+        font-size: 24px;
+      }
+
+      h2 {
+        font-size: 18px;
+      }
+    }
+  }
+
+  .action-buttons {
+    ion-button {
+      --padding-top: 14px;
+      --padding-bottom: 14px;
+    }
+  }
+}

@@ -1,0 +1,195 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/admin-dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>All Users</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="page-container">
+    <!-- Header Section -->
+    <div class="header-section">
+      <h1>👥 User Management</h1>
+      <p class="subtitle">View and manage all registered users</p>
+      
+      <!-- Stats Summary -->
+      <div class="stats-grid" *ngIf="TotalUsers && TotalUsers.length > 0">
+        <div class="stat-card total">
+          <ion-icon name="people-outline"></ion-icon>
+          <div class="stat-info">
+            <h3>{{TotalUsers.length}}</h3>
+            <p>Total Users</p>
+          </div>
+        </div>
+        <div class="stat-card donor">
+          <ion-icon name="heart-outline"></ion-icon>
+          <div class="stat-info">
+            <h3>{{getRoleCount('donor')}}</h3>
+            <p>Donors</p>
+          </div>
+        </div>
+        <div class="stat-card volunteer">
+          <ion-icon name="bicycle-outline"></ion-icon>
+          <div class="stat-info">
+            <h3>{{getRoleCount('volunteer')}}</h3>
+            <p>Volunteers</p>
+          </div>
+        </div>
+        <div class="stat-card admin">
+          <ion-icon name="shield-checkmark-outline"></ion-icon>
+          <div class="stat-info">
+            <h3>{{getRoleCount('admin')}}</h3>
+            <p>Admins</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Users List -->
+    <div class="users-container">
+      <!-- Empty State -->
+      <div *ngIf="!TotalUsers || TotalUsers.length === 0" class="empty-state">
+        <ion-icon name="people-outline"></ion-icon>
+        <h3>No Users Found</h3>
+        <p>There are currently no registered users in the system.</p>
+      </div>
+
+      <!-- User Cards -->
+      <ion-card *ngFor="let user of TotalUsers" class="user-card">
+        <!-- Card Header with Role Badge -->
+        <div class="card-header">
+          <div class="header-left">
+            <div class="avatar-container">
+              <ion-icon [name]="getRoleIcon(user.role)"></ion-icon>
+            </div>
+            <div class="user-info">
+              <h2>{{ user.username }}</h2>
+              <p class="user-id">User ID: #{{user.id}}</p>
+            </div>
+          </div>
+          <ion-badge 
+            [color]="getRoleColor(user.role)" 
+            class="role-badge">
+            {{user.role | titlecase}}
+          </ion-badge>
+        </div>
+
+        <ion-card-content>
+          <!-- Contact Information -->
+          <div class="info-section">
+            <h3 class="section-title">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              Contact Information
+            </h3>
+            <div class="info-grid">
+              <div class="info-item">
+                <ion-icon name="mail-outline"></ion-icon>
+                <div>
+                  <span class="label">Email Address</span>
+                  <span class="value">{{user.email || 'N/A'}}</span>
+                </div>
+              </div>
+              <div class="info-item" *ngIf="user.phone">
+                <ion-icon name="call-outline"></ion-icon>
+                <div>
+                  <span class="label">Phone Number</span>
+                  <span class="value">{{user.phone}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Account Details -->
+          <div class="info-section">
+            <h3 class="section-title">
+              <ion-icon name="key-outline"></ion-icon>
+              Account Details
+            </h3>
+            <div class="info-grid">
+              <div class="info-item">
+                <ion-icon name="person-circle-outline"></ion-icon>
+                <div>
+                  <span class="label">Username</span>
+                  <span class="value">{{user.username}}</span>
+                </div>
+              </div>
+              <div class="info-item">
+                <ion-icon name="shield-outline"></ion-icon>
+                <div>
+                  <span class="label">Role</span>
+                  <span class="value role-value">{{user.role | titlecase}}</span>
+                </div>
+              </div>
+              <div class="info-item" *ngIf="user.is_active !== undefined">
+                <ion-icon [name]="user.is_active ? 'checkmark-circle-outline' : 'close-circle-outline'"></ion-icon>
+                <div>
+                  <span class="label">Account Status</span>
+                  <span class="value" [class.active]="user.is_active" [class.inactive]="!user.is_active">
+                    {{user.is_active ? 'Active' : 'Inactive'}}
+                  </span>
+                </div>
+              </div>
+              <div class="info-item" *ngIf="user.last_login">
+                <ion-icon name="time-outline"></ion-icon>
+                <div>
+                  <span class="label">Last Login</span>
+                  <span class="value">{{user.last_login | date:'medium'}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Activity Stats (if available) -->
+          <div class="info-section" *ngIf="user.donations_count !== undefined || user.pickups_count !== undefined">
+            <h3 class="section-title">
+              <ion-icon name="stats-chart-outline"></ion-icon>
+              Activity Stats
+            </h3>
+            <div class="stats-row">
+              <div class="stat-item" *ngIf="user.donations_count !== undefined">
+                <ion-icon name="fast-food-outline" color="success"></ion-icon>
+                <div>
+                  <span class="stat-value">{{user.donations_count}}</span>
+                  <span class="stat-label">Donations</span>
+                </div>
+              </div>
+              <div class="stat-item" *ngIf="user.pickups_count !== undefined">
+                <ion-icon name="bicycle-outline" color="primary"></ion-icon>
+                <div>
+                  <span class="stat-value">{{user.pickups_count}}</span>
+                  <span class="stat-label">Pickups</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Timestamps -->
+          <div class="timestamps">
+            <div class="timestamp-item" *ngIf="user.date_joined || user.created_at">
+              <ion-icon name="calendar-outline"></ion-icon>
+              <span>Joined: {{(user.date_joined || user.created_at) | date:'mediumDate'}}</span>
+            </div>
+            <div class="timestamp-item" *ngIf="user.updated_at">
+              <ion-icon name="sync-outline"></ion-icon>
+              <span>Updated: {{user.updated_at | date:'short'}}</span>
+            </div>
+          </div>
+
+          <!-- Action Buttons (Optional) -->
+          <div class="action-buttons" *ngIf="false">
+            <ion-button expand="block" fill="outline" size="small">
+              <ion-icon name="create-outline" slot="start"></ion-icon>
+              Edit User
+            </ion-button>
+            <ion-button expand="block" fill="outline" size="small" color="danger">
+              <ion-icon name="trash-outline" slot="start"></ion-icon>
+              Delete User
+            </ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>

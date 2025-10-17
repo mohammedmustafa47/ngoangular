@@ -1,0 +1,32 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>ADMIN</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="admindashboard">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>Dashboard</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="admindonation">
+        <ion-icon name="heart-outline"></ion-icon>
+        <ion-label>Donations</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="adminsuser">
+        <ion-icon name="time-outline"></ion-icon>
+        <ion-label>Users</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="adminreport">
+        <ion-icon name="person-outline"></ion-icon>
+        <ion-label>Reports</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+
+</ion-content>

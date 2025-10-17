@@ -1,0 +1,49 @@
+import { Component, OnInit } from '@angular/core';
+import { Auth } from '../services/auth.service';
+
+@Component({
+  selector: 'app-admindonation',
+  templateUrl: './admindonation.page.html',
+  styleUrls: ['./admindonation.page.scss'],
+  standalone:false,
+})
+export class AdmindonationPage implements OnInit {
+  AllFood:any;
+  constructor(private serviceapi:Auth) { }
+
+  ngOnInit() {
+    this.GetAllFood();
+  }
+
+  GetAllFood(){
+    this.serviceapi.getList('donations').then((data)=>{
+      this.AllFood=data;
+      console.log(this.AllFood);
+    })
+  }
+
+  // Get status badge color
+  getStatusColor(status: string): string {
+    switch(status?.toLowerCase()) {
+      case 'pending':
+        return 'warning';
+      case 'picked_up':
+      case 'picked':
+        return 'primary';
+      case 'delivered':
+        return 'success';
+      case 'cancelled':
+        return 'danger';
+      default:
+        return 'medium';
+    }
+  }
+
+  // Get count of donations by status
+  getStatusCount(status: string): number {
+    if (!this.AllFood) return 0;
+    return this.AllFood.filter((food: any) => 
+      food.status?.toLowerCase() === status.toLowerCase()
+    ).length;
+  }
+}

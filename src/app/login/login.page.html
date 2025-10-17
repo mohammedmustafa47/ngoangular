@@ -1,0 +1,120 @@
+<ion-content [fullscreen]="true">
+  <div class="auth-container">
+    
+    <!-- Logo/Header Section -->
+    <div class="auth-header">
+      <div class="logo-circle">
+        <ion-icon name="heart-circle"></ion-icon>
+      </div>
+      <h1>Welcome Back</h1>
+      <p class="subtitle">Sign in to continue making a difference</p>
+    </div>
+
+    <!-- Login Form Card -->
+    <div class="auth-card">
+      <div class="card-header">
+        <ion-icon name="log-in-outline"></ion-icon>
+        <h2>Sign In</h2>
+      </div>
+
+      <form (ngSubmit)="onLogin()">
+        
+        <!-- Username Field -->
+        <div class="form-group">
+          <ion-item lines="none" class="custom-item">
+            <ion-icon name="person-outline" slot="start" color="primary"></ion-icon>
+            <ion-label position="floating">Username</ion-label>
+            <ion-input 
+              type="text" 
+              name="username" 
+              [(ngModel)]="loginobj.username"
+              placeholder="Enter your username"
+              required>
+            </ion-input>
+          </ion-item>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+          <ion-item lines="none" class="custom-item">
+            <ion-icon name="lock-closed-outline" slot="start" color="primary"></ion-icon>
+            <ion-label position="floating">Password</ion-label>
+            <ion-input 
+              [type]="showPassword ? 'text' : 'password'" 
+              name="password" 
+              [(ngModel)]="loginobj.password"
+              placeholder="Enter your password"
+              required>
+            </ion-input>
+            <ion-button 
+              slot="end" 
+              fill="clear" 
+              (click)="showPassword = !showPassword">
+              <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </div>
+
+        <!-- Remember Me & Forgot Password -->
+        <div class="form-options">
+          <div class="remember-me">
+            <ion-checkbox [(ngModel)]="rememberMe" name="remember"></ion-checkbox>
+            <label>Remember me</label>
+          </div>
+          <a href="#" class="forgot-link" (click)="$event.preventDefault()">Forgot Password?</a>
+        </div>
+
+        <!-- Login Button -->
+        <ion-button 
+          expand="block" 
+          type="submit"
+          size="large"
+          class="auth-button"
+          [disabled]="!loginobj.username || !loginobj.password">
+          <ion-icon name="log-in-outline" slot="start"></ion-icon>
+          Sign In
+        </ion-button>
+
+      </form>
+
+      <!-- Divider -->
+      <div class="divider">
+        <span>Don't have an account?</span>
+      </div>
+
+      <!-- Register Link -->
+      <ion-button 
+        expand="block" 
+        fill="outline" 
+        size="large"
+        routerLink="/register"
+        class="secondary-button">
+        <ion-icon name="person-add-outline" slot="start"></ion-icon>
+        Create Account
+      </ion-button>
+
+      <!-- Quick Role Info -->
+      <div class="role-badges">
+        <div class="role-badge donor">
+          <ion-icon name="heart"></ion-icon>
+          <span>Donor</span>
+        </div>
+        <div class="role-badge volunteer">
+          <ion-icon name="bicycle"></ion-icon>
+          <span>Volunteer</span>
+        </div>
+        <div class="role-badge admin">
+          <ion-icon name="shield-checkmark"></ion-icon>
+          <span>Admin</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="auth-footer">
+      <p>&copy; 2025 NGO Food Donation. Making a difference together.</p>
+    </div>
+
+  </div>
+</ion-content>

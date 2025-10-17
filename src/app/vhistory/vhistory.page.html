@@ -1,0 +1,174 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/volunteer-dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>My Task History</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="GetCompletedTasks()">
+        <ion-icon name="refresh-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="page-container">
+
+    <!-- Header Section -->
+    <div class="header-section">
+      <h1>📊 Task History</h1>
+      <p class="subtitle">Review your completed volunteer pickups and deliveries</p>
+
+      <!-- Stats Summary -->
+      <div class="stats-grid" *ngIf="CompletedTasks && CompletedTasks.length > 0">
+        <div class="stat-card total">
+          <ion-icon name="cube-outline"></ion-icon>
+          <div class="stat-info">
+            <h3>{{CompletedTasks.length}}</h3>
+            <p>Total Completed</p>
+          </div>
+        </div>
+        <div class="stat-card delivered">
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+          <div class="stat-info">
+            <h3>{{getStatusCount('delivered')}}</h3>
+            <p>Delivered</p>
+          </div>
+        </div>
+        <div class="stat-card cancelled">
+          <ion-icon name="close-circle-outline"></ion-icon>
+          <div class="stat-info">
+            <h3>{{getStatusCount('cancelled')}}</h3>
+            <p>Cancelled</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- History Container -->
+    <div class="history-container">
+
+      <!-- Empty State -->
+      <div *ngIf="!CompletedTasks || CompletedTasks.length === 0" class="empty-state">
+        <ion-icon name="file-tray-outline"></ion-icon>
+        <h3>No Completed Tasks</h3>
+        <p>Your completed volunteer tasks will appear here after you deliver donations.</p>
+        <ion-button routerLink="/vpickup" expand="block" fill="outline" class="cta-button">
+          <ion-icon name="bicycle-outline" slot="start"></ion-icon>
+          View Active Pickups
+        </ion-button>
+      </div>
+
+      <!-- History Cards -->
+      <ion-card *ngFor="let task of CompletedTasks" class="history-card">
+        
+        <!-- Card Header with Status Badge -->
+        <div class="card-header" [class.delivered-header]="task.status === 'delivered'" [class.cancelled-header]="task.status === 'cancelled'">
+          <div class="header-left">
+            <ion-icon [name]="task.status === 'delivered' ? 'checkmark-circle' : 'close-circle'" class="status-icon"></ion-icon>
+            <div class="task-info">
+              <h2>{{ task.item_name || task.food_name }}</h2>
+              <p class="task-date">
+                <ion-icon name="calendar-outline"></ion-icon>
+                {{ task.created_at | date:'MMM dd, yyyy - hh:mm a' }}
+              </p>
+            </div>
+          </div>
+          <ion-badge 
+            [color]="task.status === 'delivered' ? 'success' : 'danger'"
+            class="status-badge">
+            <ion-icon [name]="task.status === 'delivered' ? 'checkmark-circle-outline' : 'close-circle-outline'"></ion-icon>
+            {{ task.status | titlecase }}
+          </ion-badge>
+        </div>
+
+        <ion-card-content>
+          
+          <!-- Main Info Section -->
+          <div class="info-section">
+            <h3 class="section-title">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              Task Details
+            </h3>
+            <div class="info-grid">
+              <div class="info-item">
+                <ion-icon name="scale-outline"></ion-icon>
+                <div>
+                  <span class="label">Quantity</span>
+                  <span class="value">{{ task.quantity }}</span>
+                </div>
+              </div>
+
+              <div class="info-item">
+                <ion-icon name="person-outline"></ion-icon>
+                <div>
+                  <span class="label">Donor Name</span>
+                  <span class="value">{{ task.donor_name || 'N/A' }}</span>
+                </div>
+              </div>
+
+              <div class="info-item">
+                <ion-icon name="call-outline"></ion-icon>
+                <div>
+                  <span class="label">Contact</span>
+                  <span class="value">{{ task.contact_number || 'N/A' }}</span>
+                </div>
+              </div>
+
+              <div class="info-item">
+                <ion-icon name="bicycle-outline"></ion-icon>
+                <div>
+                  <span class="label">Volunteer</span>
+                  <span class="value">{{ task.volunteer_name || 'You' }}</span>
+                </div>
+              </div>
+
+              <div class="info-item full-width">
+                <ion-icon name="location-outline"></ion-icon>
+                <div>
+                  <span class="label">Pickup Address</span>
+                  <span class="value">{{ task.pickup_address || task.pickup_location || 'N/A' }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Description (Full Width) -->
+            <div class="info-item full-width" *ngIf="task.description">
+              <ion-icon name="document-text-outline"></ion-icon>
+              <div>
+                <span class="label">Description</span>
+                <span class="value description">{{ task.description }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Completion Status Message -->
+          <div class="completion-message" [class.delivered]="task.status === 'delivered'" [class.cancelled]="task.status === 'cancelled'">
+            <ion-icon [name]="task.status === 'delivered' ? 'checkmark-circle' : 'alert-circle'"></ion-icon>
+            <div>
+              <strong *ngIf="task.status === 'delivered'">✅ Successfully Delivered</strong>
+              <strong *ngIf="task.status === 'cancelled'">❌ Task Cancelled</strong>
+              <p *ngIf="task.status === 'delivered'">This donation was successfully delivered to recipients in need. Great work!</p>
+              <p *ngIf="task.status === 'cancelled'">This pickup task was cancelled and was not completed.</p>
+            </div>
+          </div>
+
+          <!-- Timestamps -->
+          <div class="timestamps">
+            <div class="timestamp-item" *ngIf="task.created_at">
+              <ion-icon name="add-circle-outline"></ion-icon>
+              <span>Created: {{ task.created_at | date:'medium' }}</span>
+            </div>
+            <div class="timestamp-item" *ngIf="task.updated_at">
+              <ion-icon name="sync-outline"></ion-icon>
+              <span>Completed: {{ task.updated_at | date:'medium' }}</span>
+            </div>
+          </div>
+
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+  </div>
+</ion-content>

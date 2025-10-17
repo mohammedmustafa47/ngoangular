@@ -1,0 +1,449 @@
+// Page Container
+.page-container {
+  padding: 16px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+// Header Section
+.header-section {
+  margin-bottom: 24px;
+  
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--ion-color-dark);
+    margin: 0 0 8px 0;
+  }
+
+  .subtitle {
+    color: var(--ion-color-medium);
+    font-size: 14px;
+    margin: 0 0 20px 0;
+  }
+}
+
+// Stats Grid
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  color: white;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  ion-icon {
+    font-size: 32px;
+    opacity: 0.9;
+  }
+
+  .stat-info {
+    flex: 1;
+
+    h3 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0;
+      line-height: 1;
+    }
+
+    p {
+      font-size: 12px;
+      margin: 4px 0 0 0;
+      opacity: 0.9;
+    }
+  }
+
+  &.total {
+    background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  }
+
+  &.donor {
+    background: linear-gradient(135deg, #2dd36f 0%, #16a34a 100%);
+  }
+
+  &.volunteer {
+    background: linear-gradient(135deg, #3880ff 0%, #2563eb 100%);
+  }
+
+  &.admin {
+    background: linear-gradient(135deg, #eb445a 0%, #dc2626 100%);
+  }
+}
+
+// Empty State
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--ion-color-medium);
+
+  ion-icon {
+    font-size: 80px;
+    opacity: 0.3;
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+  }
+
+  p {
+    font-size: 14px;
+    margin: 0;
+  }
+}
+
+// Users Container
+.users-container {
+  display: grid;
+  gap: 16px;
+}
+
+// User Card
+.user-card {
+  margin: 0;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  .card-header {
+    background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+
+      .avatar-container {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+
+        ion-icon {
+          font-size: 32px;
+          color: white;
+        }
+      }
+
+      .user-info {
+        flex: 1;
+
+        h2 {
+          font-size: 20px;
+          font-weight: 700;
+          margin: 0;
+          color: white;
+        }
+
+        .user-id {
+          font-size: 12px;
+          margin: 4px 0 0 0;
+          opacity: 0.8;
+        }
+      }
+    }
+
+    .role-badge {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 20px;
+      text-transform: capitalize;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  ion-card-content {
+    padding: 20px;
+  }
+}
+
+// Info Sections
+.info-section {
+  margin-bottom: 24px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ion-color-dark);
+    margin: 0 0 16px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    ion-icon {
+      font-size: 20px;
+      color: var(--ion-color-primary);
+    }
+  }
+}
+
+// Info Grid
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  background: var(--ion-color-light);
+  border-radius: 8px;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: var(--ion-color-light-shade);
+  }
+
+  ion-icon {
+    font-size: 20px;
+    color: var(--ion-color-primary);
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .label {
+    font-size: 12px;
+    color: var(--ion-color-medium);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .value {
+    font-size: 14px;
+    color: var(--ion-color-dark);
+    font-weight: 500;
+    line-height: 1.4;
+
+    &.role-value {
+      color: var(--ion-color-primary);
+      font-weight: 600;
+    }
+
+    &.active {
+      color: var(--ion-color-success);
+      font-weight: 600;
+    }
+
+    &.inactive {
+      color: var(--ion-color-danger);
+      font-weight: 600;
+    }
+  }
+}
+
+// Stats Row (Activity Stats)
+.stats-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  .stat-item {
+    flex: 1;
+    min-width: 120px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: var(--ion-color-light);
+    border-radius: 8px;
+
+    ion-icon {
+      font-size: 28px;
+    }
+
+    > div {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ion-color-dark);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--ion-color-medium);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+}
+
+// Timestamps
+.timestamps {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ion-color-light-shade);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  .timestamp-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--ion-color-medium);
+
+    ion-icon {
+      font-size: 16px;
+    }
+  }
+}
+
+// Action Buttons (Optional)
+.action-buttons {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ion-color-light-shade);
+  display: flex;
+  gap: 12px;
+
+  ion-button {
+    margin: 0;
+    flex: 1;
+  }
+}
+
+// Role Badge Colors Override
+ion-badge {
+  &[color="danger"] {
+    --background: #eb445a;
+  }
+
+  &[color="success"] {
+    --background: #2dd36f;
+  }
+
+  &[color="primary"] {
+    --background: #3880ff;
+  }
+
+  &[color="medium"] {
+    --background: #92949c;
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .user-card {
+    .card-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+
+      .role-badge {
+        align-self: flex-start;
+      }
+    }
+  }
+
+  .stats-row {
+    flex-direction: column;
+
+    .stat-item {
+      min-width: 100%;
+    }
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .header-section h1 {
+    font-size: 24px;
+  }
+
+  .stat-card {
+    .stat-info h3 {
+      font-size: 20px;
+    }
+  }
+
+  .user-card {
+    .card-header {
+      .header-left {
+        .avatar-container {
+          width: 48px;
+          height: 48px;
+
+          ion-icon {
+            font-size: 28px;
+          }
+        }
+
+        .user-info h2 {
+          font-size: 18px;
+        }
+      }
+    }
+  }
+}

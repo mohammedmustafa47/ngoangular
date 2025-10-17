@@ -1,0 +1,199 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/donor-dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Donation History</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="GetDonatedFood()">
+        <ion-icon name="refresh-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="page-container">
+
+    <!-- Header Section -->
+    <div class="header-section">
+      <h1>📜 Your Donations</h1>
+      <p class="subtitle">Track all your food donations and their current status</p>
+
+      <!-- Stats Summary -->
+      <div class="stats-grid" *ngIf="DonatedFood && DonatedFood.length > 0">
+        <div class="stat-card total">
+          <ion-icon name="fast-food-outline"></ion-icon>
+          <div class="stat-info">
+            <h3>{{DonatedFood.length}}</h3>
+            <p>Total Donations</p>
+          </div>
+        </div>
+        <div class="stat-card pending">
+          <ion-icon name="time-outline"></ion-icon>
+          <div class="stat-info">
+            <h3>{{getStatusCount('pending')}}</h3>
+            <p>Pending</p>
+          </div>
+        </div>
+        <div class="stat-card picked">
+          <ion-icon name="bicycle-outline"></ion-icon>
+          <div class="stat-info">
+            <h3>{{getStatusCount('picked_up')}}</h3>
+            <p>Picked Up</p>
+          </div>
+        </div>
+        <div class="stat-card delivered">
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+          <div class="stat-info">
+            <h3>{{getStatusCount('delivered')}}</h3>
+            <p>Delivered</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Donations Container -->
+    <div class="donations-container">
+      
+      <!-- Empty State -->
+      <div *ngIf="!DonatedFood || DonatedFood.length === 0" class="empty-state">
+        <ion-icon name="fast-food-outline"></ion-icon>
+        <h3>No Donations Yet</h3>
+        <p>Your donation history will appear here once you start donating food.</p>
+        <ion-button routerLink="/donateform" expand="block" class="cta-button">
+          <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+          Make Your First Donation
+        </ion-button>
+      </div>
+
+      <!-- Donation Cards -->
+      <ion-card *ngFor="let food of DonatedFood" class="donation-card">
+        
+        <!-- Card Header with Status Badge -->
+        <div class="card-header">
+          <div class="header-left">
+            <ion-icon name="fast-food" class="food-icon"></ion-icon>
+            <div class="food-info">
+              <h2>{{ food.item_name || food.food_name }}</h2>
+              <p class="donation-date">
+                <ion-icon name="calendar-outline"></ion-icon>
+                {{ food.created_at | date:'MMM dd, yyyy - hh:mm a' }}
+              </p>
+            </div>
+          </div>
+          <ion-badge 
+            [color]="getStatusColor(food.status)" 
+            class="status-badge">
+            <ion-icon [name]="getStatusIcon(food.status)"></ion-icon>
+            {{ food.status | titlecase }}
+          </ion-badge>
+        </div>
+
+        <ion-card-content>
+          
+          <!-- Main Info Grid -->
+          <div class="info-section">
+            <h3 class="section-title">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              Donation Details
+            </h3>
+            <div class="info-grid">
+              <div class="info-item">
+                <ion-icon name="scale-outline"></ion-icon>
+                <div>
+                  <span class="label">Quantity</span>
+                  <span class="value">{{ food.quantity }}</span>
+                </div>
+              </div>
+
+              <div class="info-item">
+                <ion-icon name="person-outline"></ion-icon>
+                <div>
+                  <span class="label">Donor</span>
+                  <span class="value">{{ food.donor_name || 'You' }}</span>
+                </div>
+              </div>
+
+              <div class="info-item">
+                <ion-icon name="call-outline"></ion-icon>
+                <div>
+                  <span class="label">Contact</span>
+                  <span class="value">{{ food.contact_number || 'N/A' }}</span>
+                </div>
+              </div>
+
+              <div class="info-item">
+                <ion-icon name="location-outline"></ion-icon>
+                <div>
+                  <span class="label">Pickup Address</span>
+                  <span class="value">{{ food.pickup_address || food.pickup_location || 'N/A' }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Description (Full Width) -->
+            <div class="info-item full-width" *ngIf="food.description">
+              <ion-icon name="document-text-outline"></ion-icon>
+              <div>
+                <span class="label">Description</span>
+                <span class="value description">{{ food.description }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Volunteer Info (if assigned) -->
+          <div class="info-section volunteer-section" *ngIf="food.volunteer_name">
+            <h3 class="section-title">
+              <ion-icon name="bicycle-outline"></ion-icon>
+              Volunteer Information
+            </h3>
+            <div class="volunteer-badge">
+              <ion-icon name="person-circle-outline"></ion-icon>
+              <span>Assigned to: <strong>{{ food.volunteer_name }}</strong></span>
+            </div>
+          </div>
+
+          <!-- Status Timeline -->
+          <div class="status-timeline" *ngIf="food.status !== 'pending'">
+            <h3 class="section-title">
+              <ion-icon name="git-branch-outline"></ion-icon>
+              Status Timeline
+            </h3>
+            <div class="timeline">
+              <div class="timeline-item completed">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <span class="timeline-label">Donation Created</span>
+                  <span class="timeline-date">{{ food.created_at | date:'short' }}</span>
+                </div>
+              </div>
+              <div class="timeline-item" [class.completed]="food.status === 'picked_up' || food.status === 'delivered'">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <span class="timeline-label">Picked Up by Volunteer</span>
+                  <span class="timeline-date" *ngIf="food.picked_at">{{ food.picked_at | date:'short' }}</span>
+                </div>
+              </div>
+              <div class="timeline-item" [class.completed]="food.status === 'delivered'">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <span class="timeline-label">Delivered to Recipients</span>
+                  <span class="timeline-date" *ngIf="food.delivered_at">{{ food.delivered_at | date:'short' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Timestamps -->
+          <div class="timestamps" *ngIf="food.updated_at">
+            <ion-icon name="sync-outline"></ion-icon>
+            <span>Last updated: {{ food.updated_at | date:'medium' }}</span>
+          </div>
+
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+  </div>
+</ion-content>
