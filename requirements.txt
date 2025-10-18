@@ -1,0 +1,182 @@
+# ============================================
+# NGO Food Donation App - Frontend Requirements
+# ============================================
+# Angular/Ionic Application Dependencies
+# Generated: October 18, 2025
+# ============================================
+
+# ============================================
+# PREREQUISITES (Install Globally)
+# ============================================
+# Node.js version: 18.x or higher (LTS recommended)
+# npm version: 9.x or higher
+# 
+# Install Node.js from: https://nodejs.org/
+# Verify installation:
+#   node --version
+#   npm --version
+# ============================================
+
+# ============================================
+# CORE ANGULAR FRAMEWORK (v20.0.0)
+# ============================================
+@angular/animations@^20.0.0
+@angular/common@^20.0.0
+@angular/compiler@^20.0.0
+@angular/core@^20.0.0
+@angular/forms@^20.0.0
+@angular/platform-browser@^20.0.0
+@angular/platform-browser-dynamic@^20.0.0
+@angular/router@^20.0.0
+
+# ============================================
+# IONIC FRAMEWORK (v8.0.0)
+# ============================================
+@ionic/angular@^8.0.0
+ionicons@^7.0.0
+
+# ============================================
+# CAPACITOR - NATIVE MOBILE CAPABILITIES
+# ============================================
+@capacitor/core@7.4.3
+@capacitor/app@7.1.0
+@capacitor/haptics@7.0.2
+@capacitor/keyboard@7.0.3
+@capacitor/preferences@^7.0.2
+@capacitor/status-bar@7.0.3
+
+# ============================================
+# REACTIVE PROGRAMMING & UTILITIES
+# ============================================
+rxjs@~7.8.0
+zone.js@~0.15.0
+tslib@^2.3.0
+
+# ============================================
+# DEVELOPMENT DEPENDENCIES
+# ============================================
+
+# Angular CLI & Build Tools
+@angular/cli@^20.0.0
+@angular/compiler-cli@^20.0.0
+@angular-devkit/build-angular@^20.0.0
+@angular/language-service@^20.0.0
+
+# Ionic & Capacitor CLI
+@ionic/angular-toolkit@^12.0.0
+@capacitor/cli@7.4.3
+
+# TypeScript
+typescript@~5.8.0
+
+# ESLint & Linting Tools
+@angular-eslint/builder@^20.0.0
+@angular-eslint/eslint-plugin@^20.0.0
+@angular-eslint/eslint-plugin-template@^20.0.0
+@angular-eslint/schematics@^20.0.0
+@angular-eslint/template-parser@^20.0.0
+@typescript-eslint/eslint-plugin@^8.18.0
+@typescript-eslint/parser@^8.18.0
+eslint@^9.16.0
+eslint-plugin-import@^2.29.1
+eslint-plugin-jsdoc@^48.2.1
+eslint-plugin-prefer-arrow@1.2.2
+
+# Testing Framework
+@types/jasmine@~5.1.0
+jasmine-core@~5.1.0
+jasmine-spec-reporter@~5.0.0
+karma@~6.4.0
+karma-chrome-launcher@~3.2.0
+karma-coverage@~2.2.0
+karma-jasmine@~5.1.0
+karma-jasmine-html-reporter@~2.1.0
+
+# ============================================
+# INSTALLATION INSTRUCTIONS
+# ============================================
+# 
+# Step 1: Install Node.js and npm
+#   Download from: https://nodejs.org/
+#   Recommended: Node.js 18.x LTS or higher
+#
+# Step 2: Clone the repository
+#   git clone <your-repo-url>
+#   cd ngoangular
+#
+# Step 3: Install all dependencies
+#   npm install
+#
+# Step 4: Install Ionic CLI globally (optional but recommended)
+#   npm install -g @ionic/cli
+#
+# Step 5: Install Capacitor CLI globally (optional but recommended)
+#   npm install -g @capacitor/cli
+#
+# Step 6: Run the development server
+#   npm start
+#   or
+#   ionic serve
+#
+# Step 7: Build for production
+#   npm run build
+#   or
+#   ionic build --prod
+#
+# Step 8: Run tests
+#   npm test
+#
+# ============================================
+# PROJECT SCRIPTS (from package.json)
+# ============================================
+# npm start          - Start development server
+# npm run build      - Build for production
+# npm run watch      - Build and watch for changes
+# npm test           - Run unit tests
+# npm run lint       - Run ESLint
+#
+# ============================================
+# BACKEND API CONFIGURATION
+# ============================================
+# This frontend connects to a Django REST API
+# Backend URL: http://127.0.0.1:8000/authapi/
+# 
+# Ensure the Django backend is running before starting the frontend
+# See backend requirements.txt for Django setup
+#
+# ============================================
+# BROWSER COMPATIBILITY
+# ============================================
+# - Chrome (latest)
+# - Firefox (latest)
+# - Safari (latest)
+# - Edge (latest)
+# - Mobile browsers (iOS Safari, Chrome Mobile)
+#
+# ============================================
+# ADDITIONAL NOTES
+# ============================================
+# - This is an Angular 20 + Ionic 8 application
+# - Uses standalone: false (module-based architecture)
+# - SCSS for styling with gradient themes
+# - JWT authentication with role-based routing
+# - Responsive design for mobile and desktop
+# - Three user roles: Admin, Donor, Volunteer
+#
+# ============================================
+# TROUBLESHOOTING
+# ============================================
+# If you encounter npm installation errors:
+#   1. Delete node_modules folder
+#   2. Delete package-lock.json
+#   3. Run: npm cache clean --force
+#   4. Run: npm install
+#
+# If port 8100 is in use:
+#   ionic serve --port=8200
+#
+# For production builds:
+#   Ensure all environment variables are set
+#   Update API URLs in environment files
+#
+# ============================================
