@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Auth } from '../services/auth.service';
 
 @Component({
   selector: 'app-vdashboard',
@@ -8,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VdashboardPage implements OnInit {
 
-  constructor() { }
+  constructor(private service:Auth) { }
 
   ngOnInit() {
   }

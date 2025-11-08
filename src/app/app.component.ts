@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { Auth } from './services/auth.service';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +10,12 @@ import { Component } from '@angular/core';
   standalone: false,
 })
 export class AppComponent {
-  constructor() {}
+  constructor(private route:Router, private service:Auth,private menuCtrl: MenuController) {}
+
+  async logout() {
+    localStorage.removeItem('token');
+    await this.menuCtrl.close();
+    this.route.navigate(['/login']);
+  }
+  
 }
