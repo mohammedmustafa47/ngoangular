@@ -1,8 +1,147 @@
-<ion-header [translucent]="true">
+<ion-content class="ion-padding">
+ 
+  <br>
+  <br>
+  <div class="page-container">
+  <div class="header-section">
+    <h1>Reports & Analytics</h1>
+    <p class="subtitle">Overview and downloadable reports</p>
+  </div>
+
+  <!-- Overview Section -->
+  <div class="section-title">Overview</div>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6" size-md="3">
+        <ion-card class="metric-card total">
+          <ion-card-content>
+            <ion-icon name="gift-outline"></ion-icon>
+            <h2 data-target="120">120</h2>
+            <p>Total Donations</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="6" size-md="3">
+        <ion-card class="metric-card donors">
+          <ion-card-content>
+            <ion-icon name="people-outline"></ion-icon>
+            <h2 data-target="45">45</h2>
+            <p>Total Donors</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="6" size-md="3">
+        <ion-card class="metric-card volunteers">
+          <ion-card-content>
+            <ion-icon name="bicycle-outline"></ion-icon>
+            <h2 data-target="32">32</h2>
+            <p>Total Volunteers</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="6" size-md="3">
+        <ion-card class="metric-card delivered">
+          <ion-card-content>
+            <ion-icon name="checkmark-done-outline"></ion-icon>
+            <h2 data-target="95">95%</h2>
+            <p>Delivery Success</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Downloadable Reports -->
+  <div class="section-title">Downloadable Reports</div>
+  <ion-card class="report-card compact">
+    <ion-item lines="none">
+      <ion-label>
+        <h2>Monthly Donation Report</h2>
+        <p>A summary of all donations in the last month.</p>
+      </ion-label>
+    </ion-item>
+    <ion-button class="report-download" fill="clear" color="primary" aria-label="Download Monthly Report">
+      <ion-icon slot="icon-only" name="download-outline"></ion-icon>
+    </ion-button>
+  </ion-card>
+
+  <ion-card class="report-card compact">
+    <ion-item lines="none">
+      <ion-label>
+        <h2>Volunteer Activity Report</h2>
+        <p>Overview of user donations and volunteer hours.</p>
+      </ion-label>
+    </ion-item>
+    <ion-button class="report-download" fill="clear" color="primary" aria-label="Download Volunteer Report">
+      <ion-icon slot="icon-only" name="download-outline"></ion-icon>
+    </ion-button>
+  </ion-card>
+
+  <!-- Predictive Analytics -->
+  <div class="section-title">Predictive Analytics</div>
+  <ion-card class="chart-card">
+    <ion-card-content>
+      <div class="chart-header">
+        <div>
+          <h2>Forecasted Food Availability</h2>
+          <p>Next 3 Months</p>
+        </div>
+        <div class="growth">+15%</div>
+      </div>
+      <canvas id="forecastChart"></canvas>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Performance Stats -->
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6">
+        <ion-card class="stat-card">
+          <ion-card-content>
+            <h3>Donated (Forecast)</h3>
+            <h2>12,500 lbs</h2>
+            <p class="growth-text">+10%</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="6">
+        <ion-card class="stat-card">
+          <ion-card-content>
+            <h3>Volunteer (Forecast)</h3>
+            <h2>2,300 hrs</h2>
+            <p class="growth-text">+5%</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Insights Summary -->
+  <div class="section-title">Insights Summary</div>
+  <ion-card class="insight-card">
+    <ion-card-content>
+      <ul>
+        <li>Donations increased by <b>12%</b> this month.</li>
+        <li>Volunteer participation slightly dropped (<b>-5%</b>).</li>
+        <li>Pickup efficiency improved by <b>8%</b>.</li>
+      </ul>
+    </ion-card-content>
+  </ion-card>
+
+  </div>
+</ion-content>
+
+
+<!-- <ion-header collapse="condense">
   <ion-toolbar>
-    <ion-title>adminreport</ion-title>
+    <ion-title>Reports & Analytics</ion-title>
   </ion-toolbar>
 </ion-header>
+
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
@@ -10,4 +149,4 @@
       <ion-title size="large">adminreport</ion-title>
     </ion-toolbar>
   </ion-header>
-</ion-content>
+</ion-content> -->

@@ -1,0 +1,214 @@
+ion-content {
+  background-color: #f8fafc;
+}
+
+/* page container consistent with other pages */
+.page-container {
+  padding: 16px;
+  max-width: 1400px;
+  margin: 0 auto;
+  /* use the app-standard card size so overview sub-cards match other pages */
+  --card-min-height: 160px;
+}
+
+/* header section style consistent with other pages */
+.header-section {
+  margin-bottom: 18px;
+  h1 { font-size: 28px; font-weight: 700; margin: 0; color: var(--ion-color-dark); }
+  .subtitle { margin: 6px 0 0; color: var(--ion-color-medium); font-size: 14px; }
+}
+
+.page-title {
+  font-weight: 600;
+  text-align: center;
+}
+
+.report-header {
+  ion-toolbar { --background: transparent; padding: 16px 0; }
+  .header-inner{ display:flex; gap:12px; align-items:center; }
+  .logo-circle{ width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#7c3aed,#06b6d4); color:#fff; }
+  .header-sub{ margin:0; font-size:12px; color:#6b7280; }
+}
+
+.section-title {
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin: 20px 0 10px;
+  color: #0f172a;
+}
+
+/* Metric Cards */
+/* Ensure the Ionic ion-card elements themselves receive the gradients and layout
+  so the visual style is identical to the Admin Donations page. */
+.metric-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 12px;
+  padding: 16px;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+
+  ion-icon { font-size: 32px; opacity: 0.9; }
+
+  h2 { margin: 0; font-size: 22px; line-height:1; }
+  p { margin: 0; font-size: 14px; opacity: 0.95; }
+
+  &:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+}
+
+/* Target the actual ion-card elements to ensure Ionic internals don't override
+   the custom backgrounds. This makes the cards colorful rather than plain white. */
+/* Apply backgrounds using Ionic CSS custom properties on the host so Shadow DOM
+   doesn't block our gradients. Using --background ensures the ion-card shows
+   the gradient. */
+ion-card.metric-card {
+  --background: linear-gradient(135deg, rgba(124,58,237,0.95), rgba(106,90,255,0.95));
+  --border-radius: 12px;
+  color: #fff;
+  overflow: hidden;
+}
+
+ion-card.metric-card.total { --background: linear-gradient(135deg,#7c3aed,#6d28d9); }
+ion-card.metric-card.donors { --background: linear-gradient(135deg,#f59e0b,#f97316); color:#06131a; }
+ion-card.metric-card.volunteers { --background: linear-gradient(135deg,#06b6d4,#3b82f6); }
+ion-card.metric-card.delivered { --background: linear-gradient(135deg,#10b981,#16a34a); }
+
+ion-card.metric-card ion-icon { font-size:34px; opacity:0.95; }
+ion-card.metric-card h2 { font-size:28px; font-weight:800; }
+
+
+/* reuse the standard card min height so breadth/height match other pages */
+.metric-card, .report-card, .stat-card, .insight-card { min-height: var(--card-min-height); display:flex; flex-direction:row; align-items:center; justify-content:flex-start; }
+
+.chart-card { min-height: 320px; display:flex; flex-direction:column; }
+
+/* color variants (richer gradients) */
+.metric-card.total { background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); }
+.metric-card.donors { background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%); color: #06131a; }
+.metric-card.volunteers { background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%); }
+.metric-card.delivered { background: linear-gradient(135deg, #10b981 0%, #16a34a 100%); }
+
+/* Report Cards */
+.report-card {
+  border-radius: 12px;
+  margin-bottom: 12px;
+  padding: 10px;
+  /* use Ionic host var so ion-card shows gradient inside shadow DOM */
+  --background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(6,182,212,0.05));
+  box-shadow: 0 12px 36px rgba(12, 40, 80, 0.06);
+  color: var(--ion-color-dark);
+
+  ion-item { --background: transparent; }
+
+  ion-icon { font-size: 26px; color: var(--ion-color-primary); margin-right: 10px; }
+
+  h2 { font-size: 16px; font-weight: 700; margin: 0; }
+  p { font-size: 13px; color: #475569; margin: 0; }
+
+  ion-button { border-radius: 8px; }
+
+  &::before {
+    content: '';
+    display:block;
+    width:6px;
+    height:100%;
+    background: linear-gradient(180deg,#7c3aed,#06b6d4);
+    border-radius: 8px 0 0 8px;
+    position:absolute; left:12px; top:12px;
+    opacity: 0.12;
+  }
+  position:relative; padding-left: 26px;
+}
+
+/* Compact variant used for short report rows (monthly, volunteer) */
+.report-card.compact { min-height: 72px; padding: 8px 12px; padding-left: 12px; }
+.report-card.compact ion-label h2 { font-size: 15px; margin-bottom: 2px; }
+.report-card.compact ion-label p { font-size: 12px; color: #5b6770; margin: 0; }
+.report-card.compact ion-button { align-self: center; }
+
+/* Ensure the download button sits at the far right regardless of Ionic internals */
+.report-card ion-item { display:flex; align-items:center; gap:12px; }
+.report-card ion-item > ion-label { flex: 1 1 auto; }
+
+/* New absolutely-positioned download button (forces far-right placement) */
+.report-download { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); z-index: 5; }
+.report-download ion-icon { font-size: 18px; }
+.report-card ion-button[slot="end"] { margin-left: auto; }
+
+.chart-card {
+  border-radius: 12px;
+  background: linear-gradient(180deg,#0b1220,#0f172a);
+  color: #fff;
+  margin-bottom: 15px;
+  min-height: 360px;
+}
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.chart-header .growth {
+  font-size: 20px;
+  color: #22c55e;
+  font-weight: bold;
+}
+
+/* Stat Cards */
+.stat-card {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:flex-start;
+  background: linear-gradient(135deg, #ffffff, #fbfdff);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.06);
+
+  h3 { font-size: 14px; color: #6b7280; margin: 0 0 6px 0; }
+  h2 { font-size: 24px; margin: 0 0 6px 0; font-weight:700; }
+  .growth-text { color: #16a34a; font-size: 14px; }
+}
+
+/* small hover and lift */
+.metric-card, .report-card, .stat-card { box-shadow: 0 8px 24px rgba(2,6,23,0.06); }
+.metric-card:hover, .report-card:hover, .stat-card:hover { transform: translateY(-6px); transition: transform 180ms ease; }
+
+/* chart placeholder styling */
+canvas { border-radius:8px; background: repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0 2px, transparent 2px 8px); display:block; }
+
+/* Insights */
+.insight-card {
+  border-radius: 12px;
+  background: linear-gradient(180deg, #ffffff, #fbfdff);
+  box-shadow: 0 12px 36px rgba(12, 40, 80, 0.06);
+  padding: 14px;
+
+  ul { margin: 0; padding-left: 18px; }
+  li { font-size: 14px; color: #0f1720; margin-bottom: 8px; }
+
+  &::before {
+    content: '';
+    display:block;
+    width:8px;
+    height:100%;
+    background: linear-gradient(180deg,#7c3aed,#06b6d4);
+    position:absolute;
+    left:0; top:0; border-radius:12px 0 0 12px;
+    box-shadow: 0 6px 18px rgba(124,58,237,0.08);
+  }
+  position:relative; padding-left: 26px;
+}
+
+/* Add subtle pulse and unify with dashboard styles */
+.report-header .logo-circle{ animation: pulse 3s ease-in-out infinite; box-shadow: 0 6px 18px rgba(12,74,110,0.08); }
+.metric-card, .report-card, .stat-card { box-shadow: 0 10px 26px rgba(2,6,23,0.06); }
+.metric-card:hover, .report-card:hover { transform: translateY(-6px); transition: transform 180ms ease; }
+
+@keyframes pulse { 0%{ transform:scale(1);}50%{ transform:scale(1.03);}100%{ transform:scale(1);} }
+
+ion-grid { margin-bottom: 14px; }

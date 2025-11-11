@@ -1,14 +1,94 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>admindashboard</ion-title>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">admindashboard</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  
+<br>
+<br>
+<ion-content class="dashboard-page">
+  <div class="page-wrap page-container">
+    
+    <div class="header-section">
+      <h1>Admin Dashboard</h1>
+      <p class="subtitle">Overview of donations, volunteers and key performance</p>
+    </div>
+    <section class="kpis">
+      <div class="kpi">
+        <div class="kpi-badge bg-gradient-purple"><ion-icon name="cube-outline"></ion-icon></div>
+        <div class="kpi-info"><div class="kpi-value" data-target="1248">1,248</div><div class="kpi-label">Total Donations</div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-badge bg-gradient-green"><ion-icon name="people-outline"></ion-icon></div>
+        <div class="kpi-info"><div class="kpi-value" data-target="562">562</div><div class="kpi-label">Total Donors</div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-badge bg-gradient-blue"><ion-icon name="walk-outline"></ion-icon></div>
+        <div class="kpi-info"><div class="kpi-value" data-target="84">84</div><div class="kpi-label">Total Volunteers</div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-badge bg-gradient-yellow"><ion-icon name="fast-food-outline"></ion-icon></div>
+        <div class="kpi-info"><div class="kpi-value" data-target="3420">3,420 kg</div><div class="kpi-label">Food Distributed</div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-badge bg-gradient-indigo"><ion-icon name="trending-up-outline"></ion-icon></div>
+        <div class="kpi-info"><div class="kpi-value" data-target="93">93%</div><div class="kpi-label">Delivery Success Rate</div></div>
+      </div>
+    </section>
+
+    <div class="content-grid">
+      <div class="left">
+        <div class="card panel">
+          <div class="panel-header">
+            <h3>Donations Over Time</h3>
+            <p class="muted">Last 6 months</p>
+          </div>
+          <div class="panel-body">
+            <canvas id="donationsLine" class="chart"></canvas>
+          </div>
+        </div>
+
+        <div class="row panels-row">
+          <div class="col">
+            <div class="card panel small">
+              <div class="panel-header"><h4>By Category</h4></div>
+              <div class="panel-body"><canvas id="categoryPie" class="chart small"></canvas></div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card panel small">
+              <div class="panel-header"><h4>Volunteer Hours</h4></div>
+              <div class="panel-body"><canvas id="volunteerBar" class="chart small"></canvas></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="right">
+        <div class="card panel reports">
+          <div class="panel-header"><h4>Downloadable Reports</h4></div>
+          <div class="panel-body reports-list">
+            <button class="btn btn-outline">Monthly Donation Report (PDF)</button>
+            <button class="btn btn-outline">Volunteer Activity Report (PDF)</button>
+            <button class="btn btn-outline">Food Waste Reduction Report (PDF)</button>
+          </div>
+        </div>
+
+        <div class="card panel performance">
+          <div class="panel-header"><h4>Performance Indicators</h4></div>
+          <div class="panel-body perf-list">
+            <div class="perf"><span>Avg Pickup Time</span><strong>2.6 hrs</strong></div>
+            <div class="perf"><span>Avg Delivery Time</span><strong>5.1 hrs</strong></div>
+            <div class="perf"><span>Most Active Donor</span><strong>Aisha Khan</strong></div>
+            <div class="perf"><span>Top Volunteer</span><strong>John Doe</strong></div>
+          </div>
+        </div>
+
+        <div class="card panel insights">
+          <div class="panel-header"><h4>Insights Summary</h4></div>
+          <div class="panel-body insights-list">
+            <p>Donations increased by 12% this month.</p>
+            <p>Volunteer participation slightly dropped (-5%).</p>
+            <p>Pickup efficiency improved by 8%.</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
 </ion-content>
+
