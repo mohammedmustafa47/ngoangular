@@ -1,14 +1,91 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>donordashboard</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="dashboard-page">
+  <div class="page-wrap page-container">
+    <div class="header-section">
+      <h1>Donor Dashboard</h1>
+      <p class="subtitle">Overview of your donations and recent activity</p>
+    </div>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">donordashboard</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <section class="kpis">
+      <div class="kpi">
+        <div class="kpi-badge bg-gradient-purple"><ion-icon name="gift-outline"></ion-icon></div>
+        <div class="kpi-info"><div class="kpi-value" data-target="24">24</div><div class="kpi-label">Total Donations</div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-badge bg-gradient-green"><ion-icon name="people-outline"></ion-icon></div>
+        <div class="kpi-info"><div class="kpi-value" data-target="12">12</div><div class="kpi-label">Active Volunteers</div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-badge bg-gradient-blue"><ion-icon name="calendar-outline"></ion-icon></div>
+        <div class="kpi-info"><div class="kpi-value" data-target="6">6</div><div class="kpi-label">Upcoming Pickups</div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-badge bg-gradient-indigo"><ion-icon name="trending-up-outline"></ion-icon></div>
+        <div class="kpi-info"><div class="kpi-value" data-target="92">92%</div><div class="kpi-label">Fulfillment Rate</div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-badge bg-gradient-yellow"><ion-icon name="cash-outline"></ion-icon></div>
+        <div class="kpi-info"><div class="kpi-value" data-target="320">320 kg</div><div class="kpi-label">Food Donated</div></div>
+      </div>
+    </section>
 
+    <div class="content-grid">
+      <div class="left">
+        <div class="card panel">
+          <div class="panel-header">
+            <h3>Donations Over Time</h3>
+            <p class="muted">Last 6 months</p>
+          </div>
+          <div class="panel-body">
+            <canvas id="donorDonationsLine" class="chart"></canvas>
+          </div>
+        </div>
+
+        <div class="row panels-row">
+          <div class="col">
+            <div class="card panel small">
+              <div class="panel-header"><h4>By Category</h4></div>
+              <div class="panel-body"><canvas id="donorCategoryPie" class="chart small"></canvas></div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card panel small">
+              <div class="panel-header"><h4>Recent Donations</h4></div>
+              <div class="panel-body">
+                <ul class="recent-list">
+                  <li>#D1001 — 5 kg — <span class="muted">2 days ago</span></li>
+                  <li>#D0998 — 3 kg — <span class="muted">1 week ago</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="right">
+        <div class="card panel reports">
+          <div class="panel-header"><h4>My Reports</h4></div>
+          <div class="panel-body reports-list">
+            <button class="btn btn-outline">Download Donation Summary (PDF)</button>
+            <button class="btn btn-outline">Tax Receipt</button>
+          </div>
+        </div>
+
+        <div class="card panel performance">
+          <div class="panel-header"><h4>Quick Actions</h4></div>
+          <div class="panel-body perf-list">
+            <button class="btn btn-outline">Create New Donation</button>
+            <button class="btn btn-outline">View My Donations</button>
+          </div>
+        </div>
+
+        <div class="card panel insights">
+          <div class="panel-header"><h4>Impact Summary</h4></div>
+          <div class="panel-body insights-list">
+            <p>Your donations helped feed <b>320 kg</b> last month.</p>
+            <p>You reduced waste by <b>12%</b> in your area.</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
 </ion-content>

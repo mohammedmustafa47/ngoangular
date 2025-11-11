@@ -1,0 +1,53 @@
+/* Reuse volunteer profile styles so donor profile matches design */
+.page-container { padding:16px; max-width:1400px; margin:0 auto; }
+.header-section { margin-bottom:18px; h1{ font-size:28px; margin:0; } .subtitle{ color:var(--ion-color-medium); margin-top:6px; } }
+
+.profile-grid{ display:grid; grid-template-columns: 1fr 340px; gap:16px; align-items:start; }
+.left{ display:flex; flex-direction:column; gap:12px; }
+.right{ display:flex; flex-direction:column; gap:12px; }
+
+.profile-card { border-radius:12px; overflow:hidden; box-shadow:0 10px 30px rgba(2,6,23,0.06); }
+.profile-content { display:flex; gap:14px; align-items:center; padding:18px; }
+.avatar-circle{ width:72px; height:72px; border-radius:50%; overflow:hidden; display:flex; align-items:center; justify-content:center; font-size:28px; color:#fff; background: linear-gradient(135deg,#7c3aed,#06b6d4); box-shadow:0 6px 18px rgba(12,74,110,0.08); }
+.avatar-circle img{ width:100%; height:100%; object-fit:cover; }
+.profile-info h2{ margin:0; font-size:20px; }
+.profile-info .muted{ color:var(--ion-color-medium); font-size:13px; }
+.profile-actions{ margin-left:auto; display:flex; gap:8px; align-items:center; }
+
+.stats-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:12px; }
+.stat-card{ border-radius:12px; padding:12px; box-shadow:0 8px 24px rgba(2,6,23,0.06); display:flex; flex-direction:column; }
+.stat-title{ font-size:12px; color:#6b7280; }
+.stat-value{ font-size:20px; font-weight:700; }
+.stat-card.success{ background: linear-gradient(135deg,#10b981,#16a34a); color:#fff; }
+
+.activity-card, .contact-card, .notes-card { border-radius:12px; box-shadow:0 10px 30px rgba(2,6,23,0.06); }
+.activity-list{ list-style:none; padding-left:0; margin:0; }
+.activity-list li{ padding:8px 0; border-bottom:1px dashed #eef2ff; }
+
+.contact-row{ display:flex; gap:12px; align-items:flex-start; padding:10px 0; }
+.contact-row ion-icon{ font-size:20px; color:var(--ion-color-primary); }
+.contact-row .label{ font-size:12px; color:#6b7280; }
+.contact-row .value{ font-size:14px; font-weight:600; }
+
+@media (max-width:900px){
+	.profile-grid{ grid-template-columns: 1fr; }
+	.stats-grid{ grid-template-columns: repeat(2,1fr); }
+	.profile-content { flex-direction: row; }
+}
+
+@media (max-width:600px){
+	.profile-content { flex-direction: column; align-items: flex-start; gap:12px; }
+	.avatar-circle { width:64px; height:64px; font-size:24px; }
+	.profile-actions { width:100%; margin-left:0; display:flex; gap:8px; }
+	.profile-actions ion-button { flex:1 1 auto; }
+	.stats-grid { grid-template-columns: 1fr; }
+	.contact-card, .notes-card, .activity-card { padding: 12px; }
+	.contact-row { align-items:center; }
+}
+
+/* reuse gradient badges */
+.bg-gradient-blue{ background: linear-gradient(135deg,#06b6d4,#3b82f6); }
+.bg-gradient-green{ background: linear-gradient(135deg,#10b981,#06b6d4); }
+.bg-gradient-purple{ background: linear-gradient(135deg,#7c3aed,#6d28d9); }
+.bg-gradient-indigo{ background: linear-gradient(135deg,#6366f1,#7c3aed); }
+.bg-gradient-yellow{ background: linear-gradient(135deg,#f59e0b,#f97316); }
