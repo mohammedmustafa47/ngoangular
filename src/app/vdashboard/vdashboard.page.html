@@ -1,14 +1,98 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Vdashboard</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="dashboard-page">
+  <div class="page-wrap page-container">
+    <div class="header-section">
+      <h1>Volunteer Dashboard</h1>
+      <p class="subtitle">Your upcoming pickups, hours and performance</p>
+    </div>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Vdashboard</ion-title>
-    </ion-toolbar>
-  </ion-header>
- 
+    <section class="kpis">
+      <div class="kpi">
+        <div class="kpi-badge bg-gradient-blue"><ion-icon name="calendar-outline"></ion-icon></div>
+        <div class="kpi-info"><div class="kpi-value" data-target="12">12</div><div class="kpi-label">Assigned Pickups</div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-badge bg-gradient-green"><ion-icon name="checkmark-done-outline"></ion-icon></div>
+        <div class="kpi-info"><div class="kpi-value" data-target="9">9</div><div class="kpi-label">Completed</div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-badge bg-gradient-purple"><ion-icon name="time-outline"></ion-icon></div>
+        <div class="kpi-info"><div class="kpi-value" data-target="42">42</div><div class="kpi-label">Hours Logged</div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-badge bg-gradient-indigo"><ion-icon name="trending-up-outline"></ion-icon></div>
+        <div class="kpi-info"><div class="kpi-value" data-target="95">95%</div><div class="kpi-label">Success Rate</div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-badge bg-gradient-yellow"><ion-icon name="location-outline"></ion-icon></div>
+        <div class="kpi-info"><div class="kpi-value" data-target="3">3</div><div class="kpi-label">Upcoming Pickups</div></div>
+      </div>
+    </section>
+
+    <div class="content-grid">
+      <div class="left">
+        <div class="card panel">
+          <div class="panel-header">
+            <h3>My Pickups Over Time</h3>
+            <p class="muted">Last 6 weeks</p>
+          </div>
+          <div class="panel-body">
+            <canvas id="pickupsLine" class="chart"></canvas>
+          </div>
+        </div>
+
+        <div class="row panels-row">
+          <div class="col">
+            <div class="card panel small">
+              <div class="panel-header"><h4>Completion Rate</h4></div>
+              <div class="panel-body"><canvas id="completionPie" class="chart small"></canvas></div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card panel small">
+              <div class="panel-header"><h4>Hours This Week</h4></div>
+              <div class="panel-body"><canvas id="hoursBar" class="chart small"></canvas></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="right">
+        <div class="card panel reports">
+          <div class="panel-header"><h4>Upcoming Pickups</h4></div>
+          <div class="panel-body reports-list">
+            <div class="pickup-item">
+              <strong>Pickup #A123</strong>
+              <div class="muted">Tomorrow, 10:00 AM — 2.5 kg</div>
+            </div>
+            <div class="pickup-item">
+              <strong>Pickup #B456</strong>
+              <div class="muted">Fri, 2:30 PM — 5.0 kg</div>
+            </div>
+            <div class="pickup-item">
+              <strong>Pickup #C789</strong>
+              <div class="muted">Sat, 9:00 AM — 3.0 kg</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card panel performance">
+          <div class="panel-header"><h4>Quick Actions</h4></div>
+          <div class="panel-body perf-list">
+            <button class="btn btn-outline">View Assigned Pickups</button>
+            <button class="btn btn-outline">Log Hours</button>
+            <button class="btn btn-outline">Report Issue</button>
+          </div>
+        </div>
+
+        <div class="card panel insights">
+          <div class="panel-header"><h4>Tips & Notes</h4></div>
+          <div class="panel-body insights-list">
+            <p>Remember to confirm pickup completion in the app.</p>
+            <p>Keep temperature-sensitive items cool and packed safely.</p>
+            <p>Contact the donor if pickup time needs adjustment.</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
 </ion-content>

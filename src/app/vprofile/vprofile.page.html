@@ -1,13 +1,88 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Vprofile</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="ion-padding">
+  <br>
+  <br>
+  <div class="page-container">
+    <div class="header-section">
+      <h1>Volunteer Profile</h1>
+      <p class="subtitle">Your account details and recent activity</p>
+    </div>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Vprofile</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <div class="profile-grid">
+      <div class="left">
+        <ion-card class="profile-card">
+          <ion-card-content class="profile-content">
+            <div class="avatar-circle">V</div>
+            <div class="profile-info">
+              <h2>Valeria Ahmed</h2>
+              <p class="muted">Volunteer since Jan 2024</p>
+              <div class="roles">Driver • Pickup Specialist</div>
+            </div>
+            <div class="profile-actions">
+              <ion-button size="small" fill="outline">Edit Profile</ion-button>
+              <ion-button size="small" color="danger" fill="clear">Logout</ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+
+        <div class="stats-grid">
+          <ion-card class="stat-card">
+            <ion-card-content>
+              <div class="stat-title">Assigned Pickups</div>
+              <div class="stat-value">8</div>
+            </ion-card-content>
+          </ion-card>
+          <ion-card class="stat-card">
+            <ion-card-content>
+              <div class="stat-title">Hours Logged</div>
+              <div class="stat-value">42 hrs</div>
+            </ion-card-content>
+          </ion-card>
+          <ion-card class="stat-card success">
+            <ion-card-content>
+              <div class="stat-title">Success Rate</div>
+              <div class="stat-value">95%</div>
+            </ion-card-content>
+          </ion-card>
+        </div>
+
+        <ion-card class="activity-card">
+          <ion-card-header>
+            <ion-card-title>Recent Pickups</ion-card-title>
+            <ion-card-subtitle class="muted">Latest 5</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <ul class="activity-list">
+              <li><strong>#A123</strong> — Delivered · 2.5 kg · <span class="muted">2 days ago</span></li>
+              <li><strong>#B456</strong> — Picked up · 5.0 kg · <span class="muted">4 days ago</span></li>
+              <li><strong>#C789</strong> — Delivered · 3.0 kg · <span class="muted">1 week ago</span></li>
+            </ul>
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+      <aside class="right">
+        <ion-card class="contact-card">
+          <ion-card-header>
+            <ion-card-title>Contact</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <div class="contact-row"><ion-icon name="person-circle-outline"></ion-icon><div><div class="label">Full name</div><div class="value">Valeria Ahmed</div></div></div>
+            <div class="contact-row"><ion-icon name="call-outline"></ion-icon><div><div class="label">Phone</div><div class="value">+1 555 0123</div></div></div>
+            <div class="contact-row"><ion-icon name="mail-outline"></ion-icon><div><div class="label">Email</div><div class="value">valeria@example.com</div></div></div>
+            <div class="contact-row"><ion-icon name="location-outline"></ion-icon><div><div class="label">Service Area</div><div class="value">Downtown & East Side</div></div></div>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card class="notes-card">
+          <ion-card-header>
+            <ion-card-title>Notes</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p>Make sure to follow the donor's instructions for pickup. Use gloves and masks when necessary.</p>
+          </ion-card-content>
+        </ion-card>
+      </aside>
+    </div>
+
+  </div>
 </ion-content>
