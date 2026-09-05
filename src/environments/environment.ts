@@ -1,12 +1,13 @@
 // This file can be replaced during build by using the `fileReplacements` array.
-// `ng build` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
+// `ng build` replaces `environment.ts` with `environment.prod.ts`.http://98.130.123.171/authapi/
+// The list of file replacements can be found in `angular.json`.http://98.130.123.171/authapi/
+
 
 export const environment = {
   production: false,
-  ip_url:'',
+  ip_url: '' ,
   local_url: 'http://127.0.0.1:8000',
-  prod_url: '',
+  prod_url:  '' ,
   test_url: '',
   demo_url: '',
 };

@@ -24,9 +24,10 @@
           <ion-item lines="none" class="custom-item">
             <ion-icon name="person-outline" slot="start" color="primary"></ion-icon>
             <ion-label position="floating">Username</ion-label>
-            <ion-input 
-              type="text" 
-              name="username" 
+            <ion-input
+              id="username-input"
+              type="text"
+              name="username"
               [(ngModel)]="loginobj.username"
               placeholder="Enter your username"
               required>
@@ -39,9 +40,10 @@
           <ion-item lines="none" class="custom-item">
             <ion-icon name="lock-closed-outline" slot="start" color="primary"></ion-icon>
             <ion-label position="floating">Password</ion-label>
-            <ion-input 
-              [type]="showPassword ? 'text' : 'password'" 
-              name="password" 
+            <ion-input
+              id="password-input"
+              [type]="showPassword ? 'text' : 'password'"
+              name="password"
               [(ngModel)]="loginobj.password"
               placeholder="Enter your password"
               required>
@@ -65,8 +67,9 @@
         </div>
 
         <!-- Login Button -->
-        <ion-button 
-          expand="block" 
+        <ion-button
+          id="login-submit-button"
+          expand="block"
           type="submit"
           size="large"
           class="auth-button"
