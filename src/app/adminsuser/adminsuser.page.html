@@ -177,15 +177,40 @@
             </div>
           </div>
 
-          <!-- Action Buttons (Optional) -->
-          <div class="action-buttons" *ngIf="false">
-            <ion-button expand="block" fill="outline" size="small">
+          <!-- Inline Edit Form (username/email only — role/area are read-only per backend) -->
+          <div class="info-section" *ngIf="editingUserId === user.id">
+            <h3 class="section-title">
+              <ion-icon name="create-outline"></ion-icon>
+              Edit User
+            </h3>
+            <ion-item lines="none">
+              <ion-label position="floating">Username</ion-label>
+              <ion-input type="text" [(ngModel)]="editUsername"></ion-input>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-label position="floating">Email</ion-label>
+              <ion-input type="email" [(ngModel)]="editEmail"></ion-input>
+            </ion-item>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="action-buttons" *ngIf="editingUserId !== user.id">
+            <ion-button expand="block" fill="outline" size="small" (click)="startEdit(user)">
               <ion-icon name="create-outline" slot="start"></ion-icon>
               Edit User
             </ion-button>
-            <ion-button expand="block" fill="outline" size="small" color="danger">
+            <ion-button expand="block" fill="outline" size="small" color="danger" (click)="deleteUser(user.id)">
               <ion-icon name="trash-outline" slot="start"></ion-icon>
               Delete User
+            </ion-button>
+          </div>
+          <div class="action-buttons" *ngIf="editingUserId === user.id">
+            <ion-button expand="block" size="small" (click)="saveEdit(user)">
+              <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+              Save
+            </ion-button>
+            <ion-button expand="block" fill="outline" color="medium" size="small" (click)="cancelEdit()">
+              Cancel
             </ion-button>
           </div>
         </ion-card-content>

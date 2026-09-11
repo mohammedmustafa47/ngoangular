@@ -9,6 +9,10 @@ import { Auth } from '../services/auth.service';
 })
 export class AdminsuserPage implements OnInit {
   TotalUsers:any;
+  editingUserId: number | null = null;
+  editUsername = '';
+  editEmail = '';
+
   constructor(private serviceapi:Auth) { }
 
   ngOnInit() {
@@ -20,6 +24,44 @@ export class AdminsuserPage implements OnInit {
       this.TotalUsers=data;
       console.log(this.TotalUsers);
     })
+  }
+
+  startEdit(user: any) {
+    this.editingUserId = user.id;
+    this.editUsername = user.username;
+    this.editEmail = user.email;
+  }
+
+  cancelEdit() {
+    this.editingUserId = null;
+  }
+
+  saveEdit(user: any) {
+    if (!this.editUsername || !this.editEmail) {
+      alert('Username and email are required');
+      return;
+    }
+    // Only username/email are writable via this endpoint — role/area are read-only per ui.md §6
+    this.serviceapi.saveRecord('users', { id: user.id, username: this.editUsername, email: this.editEmail })
+      .then(() => {
+        user.username = this.editUsername;
+        user.email = this.editEmail;
+        this.editingUserId = null;
+      })
+      .catch((error) => {
+        console.error('Error updating user:', error);
+        alert(error?.error?.username?.[0] || error?.error?.email?.[0] || error?.error?.detail || 'Failed to update user.');
+      });
+  }
+
+  deleteUser(id: number) {
+    if (!confirm('Delete this user? This cannot be undone.')) return;
+    this.serviceapi.deleteRecord('users', id).then(() => {
+      this.TotalUsers = this.TotalUsers.filter((user: any) => user.id !== id);
+    }).catch((error) => {
+      console.error('Error deleting user:', error);
+      alert(error?.error?.detail || 'Failed to delete user.');
+    });
   }
 
   // Get role badge color
