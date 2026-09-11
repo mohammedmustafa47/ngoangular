@@ -1,0 +1,44 @@
+<ion-content [fullscreen]="true">
+  <div class="auth-container">
+
+    <div class="auth-header">
+      <div class="logo-circle">
+        <ion-icon name="mail-open-outline"></ion-icon>
+      </div>
+      <h1>Verify Your Email</h1>
+      <p class="subtitle">Enter the code we sent to {{ email || 'your email' }}</p>
+    </div>
+
+    <div class="auth-card">
+      <form (ngSubmit)="onVerify()">
+
+        <div class="form-group">
+          <ion-item lines="none" class="custom-item">
+            <ion-icon name="mail-outline" slot="start" color="primary"></ion-icon>
+            <ion-label position="floating">Email *</ion-label>
+            <ion-input type="email" name="email" [(ngModel)]="email" required></ion-input>
+          </ion-item>
+        </div>
+
+        <div class="form-group">
+          <ion-item lines="none" class="custom-item">
+            <ion-icon name="keypad-outline" slot="start" color="primary"></ion-icon>
+            <ion-label position="floating">Verification Code *</ion-label>
+            <ion-input type="text" name="otp" [(ngModel)]="otp" placeholder="Enter OTP" required></ion-input>
+          </ion-item>
+        </div>
+
+        <ion-button expand="block" type="submit" size="large" class="auth-button" [disabled]="submitting || !email || !otp">
+          <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+          Verify Email
+        </ion-button>
+
+        <ion-button expand="block" fill="clear" type="button" [disabled]="resending || !email" (click)="onResend()">
+          Resend Code
+        </ion-button>
+
+      </form>
+    </div>
+
+  </div>
+</ion-content>
