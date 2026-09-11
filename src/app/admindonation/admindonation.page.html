@@ -167,6 +167,13 @@
               <span>Updated: {{allfood.updated_at | date:'short'}}</span>
             </div>
           </div>
+
+          <div class="action-buttons">
+            <ion-button size="small" fill="outline" color="danger" (click)="deleteDonation(allfood.id)">
+              <ion-icon name="trash-outline" slot="start"></ion-icon>
+              Delete
+            </ion-button>
+          </div>
         </ion-card-content>
       </ion-card>
     </div>

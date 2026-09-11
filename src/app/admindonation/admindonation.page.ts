@@ -22,6 +22,16 @@ export class AdmindonationPage implements OnInit {
     })
   }
 
+  deleteDonation(id: number) {
+    if (!confirm('Delete this donation? This cannot be undone.')) return;
+    this.serviceapi.deleteRecord('donations', id).then(() => {
+      this.AllFood = this.AllFood.filter((food: any) => food.id !== id);
+    }).catch((error) => {
+      console.error('Error deleting donation:', error);
+      alert(error?.error?.detail || 'Failed to delete donation.');
+    });
+  }
+
   // Get status badge color
   getStatusColor(status: string): string {
     switch(status?.toLowerCase()) {
