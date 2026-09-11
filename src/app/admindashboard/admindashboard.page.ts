@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Auth } from '../services/auth.service';
 import { Chart, registerables } from 'chart.js';
 
@@ -10,32 +10,73 @@ Chart.register(...registerables);
   styleUrls: ['./admindashboard.page.scss'],
   standalone:false,
 })
-export class AdmindashboardPage implements OnInit, AfterViewInit {
+export class AdmindashboardPage implements OnInit, OnDestroy {
+
+  loading = true;
+  error = false;
+
+  totalDonations = 0;
+  totalDonors = 0;
+  totalVolunteers = 0;
+  delivered = 0;
+  successRate = 0;
+  avgDeliveryHours: number | null = null;
+  topVolunteer: { username: string; delivered: number } | null = null;
+
+  private lineChart?: Chart;
+  private statusChart?: Chart;
+  private leaderboardChart?: Chart;
 
   constructor(private service: Auth) { }
 
   ngOnInit() {
+    this.service.getAreaAdminAnalytics().subscribe({
+      next: (data: any) => {
+        this.applyData(data);
+        this.loading = false;
+        setTimeout(() => this.initCharts(data), 0);
+      },
+      error: (err) => {
+        console.error('Failed to load area-admin analytics:', err);
+        this.loading = false;
+        this.error = true;
+      }
+    });
   }
 
-  ngAfterViewInit(): void {
-    // small delay to ensure canvases are present
-    setTimeout(() => {
-      this.initCharts();
-      this.startCountUp();
-    }, 50);
+  ngOnDestroy(): void {
+    this.lineChart?.destroy();
+    this.statusChart?.destroy();
+    this.leaderboardChart?.destroy();
   }
 
-  private initCharts() {
-    // Donations over time - line
+  private applyData(data: any) {
+    const totals = data.totals || { pending: 0, picked: 0, delivered: 0, cancelled: 0 };
+    this.totalDonations = (totals.pending || 0) + (totals.picked || 0) + (totals.delivered || 0) + (totals.cancelled || 0);
+    this.delivered = totals.delivered || 0;
+    this.successRate = this.totalDonations > 0 ? Math.round((this.delivered / this.totalDonations) * 100) : 0;
+    const usersByRole = data.users_by_role || {};
+    this.totalDonors = usersByRole.donor || 0;
+    this.totalVolunteers = usersByRole.volunteer || 0;
+    this.avgDeliveryHours = data.avg_delivery_hours ?? null;
+    const leaderboard = data.leaderboard || [];
+    this.topVolunteer = leaderboard.length > 0 ? leaderboard[0] : null;
+  }
+
+  private initCharts(data: any) {
+    const timeseries = data.timeseries || [];
+    const totals = data.totals || { pending: 0, picked: 0, delivered: 0, cancelled: 0 };
+    const leaderboard = data.leaderboard || [];
+
     const dCtx: any = document.getElementById('donationsLine');
     if (dCtx) {
-      new Chart(dCtx, {
+      this.lineChart = new Chart(dCtx, {
         type: 'line',
         data: {
-          labels: ['May','Jun','Jul','Aug','Sep','Oct'],
+          labels: timeseries.map((t: any) => t.date),
           datasets: [{
             label: 'Donations',
-            data: [320, 410, 360, 480, 520, 610],
+            data: timeseries.map((t: any) => t.count),
             borderColor: '#06b6d4',
             backgroundColor: 'rgba(59,130,246,0.08)',
             tension: 0.35,
@@ -47,47 +88,23 @@ export class AdmindashboardPage implements OnInit, AfterViewInit {
       });
     }
 
-    // Category pie
     const pCtx: any = document.getElementById('categoryPie');
     if (pCtx) {
-      new Chart(pCtx, {
+      this.statusChart = new Chart(pCtx, {
         type: 'doughnut',
-        data: { labels:['Cooked','Groceries','Packed'], datasets:[{ data:[45,30,25], backgroundColor:['#8b5cf6','#06b6d4','#f59e0b'] }] },
+        data: { labels:['Pending','Picked','Delivered','Cancelled'], datasets:[{ data:[totals.pending || 0, totals.picked || 0, totals.delivered || 0, totals.cancelled || 0], backgroundColor:['#f59e0b','#8b5cf6','#10b981','#ef4444'] }] },
         options:{ plugins:{ legend:{ position:'bottom' } } }
       });
     }
 
-    // Volunteer bar
     const vCtx: any = document.getElementById('volunteerBar');
     if (vCtx) {
-      new Chart(vCtx, {
+      this.leaderboardChart = new Chart(vCtx, {
         type: 'bar',
-        data: { labels:['Mon','Tue','Wed','Thu','Fri','Sat'], datasets:[{ data:[12,18,9,14,16,20], backgroundColor:'#7c3aed' }] },
+        data: { labels: leaderboard.map((l: any) => l.username), datasets:[{ label: 'Delivered', data: leaderboard.map((l: any) => l.delivered), backgroundColor:'#7c3aed' }] },
         options:{ plugins:{ legend:{ display:false } }, scales:{ y:{ display:false } } }
       });
     }
   }
 
-  private startCountUp() {
-    const els = document.querySelectorAll<HTMLElement>('.kpi-value[data-target]');
-    els.forEach(el => {
-      const target = Number(el.getAttribute('data-target')) || 0;
-      const isPercent = el.textContent?.includes('%');
-      const suffix = isPercent ? '%' : (el.textContent?.match(/[a-zA-Z]+$/) || [''])[0];
-      const duration = 1000;
-      const start = 0;
-      const startTime = performance.now();
-
-      const step = (now: number) => {
-        const progress = Math.min((now - startTime) / duration, 1);
-        const value = Math.floor(progress * (target - start) + start);
-        // format with commas for thousands
-        el.textContent = value.toLocaleString() + (suffix || (isPercent ? '%' : ''));
-        if (progress < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    });
-  }
-
 }
-
