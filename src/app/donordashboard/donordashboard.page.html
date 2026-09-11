@@ -5,26 +5,35 @@
       <p class="subtitle">Overview of your donations and recent activity</p>
     </div>
 
+    <div *ngIf="loading" class="ion-text-center ion-padding">
+      <ion-spinner></ion-spinner>
+    </div>
+
+    <div *ngIf="error && !loading" class="ion-text-center ion-padding">
+      <p>Could not load analytics. Please try again later.</p>
+    </div>
+
+    <ng-container *ngIf="!loading && !error">
     <section class="kpis">
       <div class="kpi">
         <div class="kpi-badge bg-gradient-purple"><ion-icon name="gift-outline"></ion-icon></div>
-        <div class="kpi-info"><div class="kpi-value" data-target="24">24</div><div class="kpi-label">Total Donations</div></div>
+        <div class="kpi-info"><div class="kpi-value">{{ totalDonations }}</div><div class="kpi-label">Total Donations</div></div>
       </div>
       <div class="kpi">
-        <div class="kpi-badge bg-gradient-green"><ion-icon name="people-outline"></ion-icon></div>
-        <div class="kpi-info"><div class="kpi-value" data-target="12">12</div><div class="kpi-label">Active Volunteers</div></div>
+        <div class="kpi-badge bg-gradient-green"><ion-icon name="checkmark-done-outline"></ion-icon></div>
+        <div class="kpi-info"><div class="kpi-value">{{ delivered }}</div><div class="kpi-label">Delivered</div></div>
       </div>
       <div class="kpi">
-        <div class="kpi-badge bg-gradient-blue"><ion-icon name="calendar-outline"></ion-icon></div>
-        <div class="kpi-info"><div class="kpi-value" data-target="6">6</div><div class="kpi-label">Upcoming Pickups</div></div>
+        <div class="kpi-badge bg-gradient-blue"><ion-icon name="bicycle-outline"></ion-icon></div>
+        <div class="kpi-info"><div class="kpi-value">{{ inProgress }}</div><div class="kpi-label">In Progress</div></div>
       </div>
       <div class="kpi">
         <div class="kpi-badge bg-gradient-indigo"><ion-icon name="trending-up-outline"></ion-icon></div>
-        <div class="kpi-info"><div class="kpi-value" data-target="92">92%</div><div class="kpi-label">Fulfillment Rate</div></div>
+        <div class="kpi-info"><div class="kpi-value">{{ fulfillmentRate }}%</div><div class="kpi-label">Fulfillment Rate</div></div>
       </div>
       <div class="kpi">
         <div class="kpi-badge bg-gradient-yellow"><ion-icon name="cash-outline"></ion-icon></div>
-        <div class="kpi-info"><div class="kpi-value" data-target="320">320 kg</div><div class="kpi-label">Food Donated</div></div>
+        <div class="kpi-info"><div class="kpi-value">{{ itemsDonated }}</div><div class="kpi-label">Items Donated</div></div>
       </div>
     </section>
 
@@ -43,7 +52,7 @@
         <div class="row panels-row">
           <div class="col">
             <div class="card panel small">
-              <div class="panel-header"><h4>By Category</h4></div>
+              <div class="panel-header"><h4>By Status</h4></div>
               <div class="panel-body"><canvas id="donorCategoryPie" class="chart small"></canvas></div>
             </div>
           </div>
@@ -81,11 +90,12 @@
         <div class="card panel insights">
           <div class="panel-header"><h4>Impact Summary</h4></div>
           <div class="panel-body insights-list">
-            <p>Your donations helped feed <b>320 kg</b> last month.</p>
-            <p>You reduced waste by <b>12%</b> in your area.</p>
+            <p>You've donated <b>{{ itemsDonated }} items</b> across <b>{{ totalDonations }} donations</b> so far.</p>
+            <p><b>{{ delivered }}</b> have been delivered, at a <b>{{ fulfillmentRate }}%</b> fulfillment rate.</p>
           </div>
         </div>
       </aside>
     </div>
+    </ng-container>
   </div>
 </ion-content>
