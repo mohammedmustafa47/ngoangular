@@ -10,6 +10,7 @@ export const environment = {
   prod_url:  '' ,
   test_url: '',
   demo_url: '',
+  apiUrl: 'http://127.0.0.1:8000/authapi/',
 };
 /*
  * For easier debugging in development mode, you can import the following file
