@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Auth } from '../services/auth.service';
 import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
@@ -9,25 +10,66 @@ Chart.register(...registerables);
   styleUrls: ['./adminreport.page.scss'],
   standalone:false
 })
-export class AdminreportPage implements OnInit {
+export class AdminreportPage implements OnInit, OnDestroy {
 
+  loading = true;
+  error = false;
 
-  constructor() { }
+  totalDonations = 0;
+  totalDonors = 0;
+  totalVolunteers = 0;
+  delivered = 0;
+  successRate = 0;
+  avgDeliveryHours: number | null = null;
+  topVolunteer: { username: string; delivered: number } | null = null;
+
+  private chart?: Chart;
+
+  constructor(private service: Auth) { }
 
   ngOnInit() {
-    this.renderChart();
-    // start small count-up for metric cards
-    setTimeout(()=> this.startCountUp(), 60);
+    this.service.getAreaAdminAnalytics().subscribe({
+      next: (data: any) => {
+        this.applyData(data);
+        this.loading = false;
+        setTimeout(() => this.renderChart(data), 0);
+      },
+      error: (err) => {
+        console.error('Failed to load area-admin analytics:', err);
+        this.loading = false;
+        this.error = true;
+      }
+    });
   }
 
-    renderChart() {
+  ngOnDestroy(): void {
+    this.chart?.destroy();
+  }
+
+  private applyData(data: any) {
+    const totals = data.totals || { pending: 0, picked: 0, delivered: 0, cancelled: 0 };
+    this.totalDonations = (totals.pending || 0) + (totals.picked || 0) + (totals.delivered || 0) + (totals.cancelled || 0);
+    this.delivered = totals.delivered || 0;
+    this.successRate = this.totalDonations > 0 ? Math.round((this.delivered / this.totalDonations) * 100) : 0;
+    const usersByRole = data.users_by_role || {};
+    this.totalDonors = usersByRole.donor || 0;
+    this.totalVolunteers = usersByRole.volunteer || 0;
+    this.avgDeliveryHours = data.avg_delivery_hours ?? null;
+    const leaderboard = data.leaderboard || [];
+    this.topVolunteer = leaderboard.length > 0 ? leaderboard[0] : null;
+  }
+
+  private renderChart(data: any) {
+    const timeseries = data.timeseries || [];
     const ctx: any = document.getElementById('forecastChart');
-    new Chart(ctx, {
+    if (!ctx) return;
+    this.chart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: ['Jan', 'Feb', 'Mar'],
+        labels: timeseries.map((t: any) => t.date),
         datasets: [{
-          data: [80, 60, 75],
+          label: 'Donations',
+          data: timeseries.map((t: any) => t.count),
           borderColor: '#3b82f6',
           fill: false,
           tension: 0.4
@@ -40,23 +82,6 @@ export class AdminreportPage implements OnInit {
           y: { ticks: { color: '#fff' } }
         }
       }
-    });
-  }
-
-  private startCountUp() {
-    const els = document.querySelectorAll<HTMLElement>('h2[data-target]');
-    els.forEach(el => {
-      const target = Number(el.getAttribute('data-target')) || 0;
-      const duration = 900;
-      const start = 0;
-      const startTime = performance.now();
-      const step = (now: number) => {
-        const progress = Math.min((now - startTime) / duration, 1);
-        const value = Math.floor(progress * (target - start) + start);
-        el.textContent = value.toLocaleString();
-        if (progress < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
     });
   }
 }

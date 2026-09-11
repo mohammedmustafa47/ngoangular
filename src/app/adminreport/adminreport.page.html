@@ -8,6 +8,15 @@
     <p class="subtitle">Overview and downloadable reports</p>
   </div>
 
+  <div *ngIf="loading" class="ion-text-center ion-padding">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <div *ngIf="error && !loading" class="ion-text-center ion-padding">
+    <p>Could not load analytics. Please try again later.</p>
+  </div>
+
+  <ng-container *ngIf="!loading && !error">
   <!-- Overview Section -->
   <div class="section-title">Overview</div>
   <ion-grid>
@@ -16,7 +25,7 @@
         <ion-card class="metric-card total">
           <ion-card-content>
             <ion-icon name="gift-outline"></ion-icon>
-            <h2 data-target="120">120</h2>
+            <h2>{{ totalDonations }}</h2>
             <p>Total Donations</p>
           </ion-card-content>
         </ion-card>
@@ -26,7 +35,7 @@
         <ion-card class="metric-card donors">
           <ion-card-content>
             <ion-icon name="people-outline"></ion-icon>
-            <h2 data-target="45">45</h2>
+            <h2>{{ totalDonors }}</h2>
             <p>Total Donors</p>
           </ion-card-content>
         </ion-card>
@@ -36,7 +45,7 @@
         <ion-card class="metric-card volunteers">
           <ion-card-content>
             <ion-icon name="bicycle-outline"></ion-icon>
-            <h2 data-target="32">32</h2>
+            <h2>{{ totalVolunteers }}</h2>
             <p>Total Volunteers</p>
           </ion-card-content>
         </ion-card>
@@ -46,7 +55,7 @@
         <ion-card class="metric-card delivered">
           <ion-card-content>
             <ion-icon name="checkmark-done-outline"></ion-icon>
-            <h2 data-target="95">95%</h2>
+            <h2>{{ successRate }}%</h2>
             <p>Delivery Success</p>
           </ion-card-content>
         </ion-card>
@@ -80,16 +89,15 @@
     </ion-button>
   </ion-card>
 
-  <!-- Predictive Analytics -->
-  <div class="section-title">Predictive Analytics</div>
+  <!-- Donation Trend -->
+  <div class="section-title">Donation Trend</div>
   <ion-card class="chart-card">
     <ion-card-content>
       <div class="chart-header">
         <div>
-          <h2>Forecasted Food Availability</h2>
-          <p>Next 3 Months</p>
+          <h2>Donations Over Time</h2>
+          <p>Recent activity in your area</p>
         </div>
-        <div class="growth">+15%</div>
       </div>
       <canvas id="forecastChart"></canvas>
     </ion-card-content>
@@ -101,9 +109,8 @@
       <ion-col size="6">
         <ion-card class="stat-card">
           <ion-card-content>
-            <h3>Donated (Forecast)</h3>
-            <h2>12,500 lbs</h2>
-            <p class="growth-text">+10%</p>
+            <h3>Avg Delivery Time</h3>
+            <h2>{{ avgDeliveryHours !== null ? (avgDeliveryHours | number:'1.1-1') + ' hrs' : '—' }}</h2>
           </ion-card-content>
         </ion-card>
       </ion-col>
@@ -111,9 +118,9 @@
       <ion-col size="6">
         <ion-card class="stat-card">
           <ion-card-content>
-            <h3>Volunteer (Forecast)</h3>
-            <h2>2,300 hrs</h2>
-            <p class="growth-text">+5%</p>
+            <h3>Top Volunteer</h3>
+            <h2>{{ topVolunteer ? topVolunteer.username : '—' }}</h2>
+            <p class="growth-text" *ngIf="topVolunteer">{{ topVolunteer.delivered }} delivered</p>
           </ion-card-content>
         </ion-card>
       </ion-col>
@@ -125,12 +132,12 @@
   <ion-card class="insight-card">
     <ion-card-content>
       <ul>
-        <li>Donations increased by <b>12%</b> this month.</li>
-        <li>Volunteer participation slightly dropped (<b>-5%</b>).</li>
-        <li>Pickup efficiency improved by <b>8%</b>.</li>
+        <li>{{ totalDonations }} donations this period, {{ delivered }} delivered ({{ successRate }}% success rate).</li>
+        <li>{{ totalDonors }} donors and {{ totalVolunteers }} volunteers active in this area.</li>
       </ul>
     </ion-card-content>
   </ion-card>
+  </ng-container>
 
   </div>
 </ion-content>
