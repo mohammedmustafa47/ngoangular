@@ -191,6 +191,18 @@
             <span>Last updated: {{ food.updated_at | date:'medium' }}</span>
           </div>
 
+          <!-- Edit/Delete (only while still pending, before a volunteer picks it up) -->
+          <div class="action-buttons" *ngIf="food.status === 'pending'">
+            <ion-button size="small" fill="outline" (click)="editDonation(food.id)">
+              <ion-icon name="create-outline" slot="start"></ion-icon>
+              Edit
+            </ion-button>
+            <ion-button size="small" fill="outline" color="danger" (click)="deleteDonation(food.id)">
+              <ion-icon name="trash-outline" slot="start"></ion-icon>
+              Delete
+            </ion-button>
+          </div>
+
         </ion-card-content>
       </ion-card>
     </div>

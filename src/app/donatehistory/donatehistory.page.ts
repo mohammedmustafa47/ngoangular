@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Auth } from '../services/auth.service';
 
 @Component({
@@ -9,17 +10,31 @@ import { Auth } from '../services/auth.service';
 })
 export class DonatehistoryPage implements OnInit {
   DonatedFood:any;
-  constructor(private serviceapi:Auth) { }
+  constructor(private serviceapi:Auth, private router: Router) { }
 
   ngOnInit() {
     this.GetDonatedFood();
   }
-  
+
   GetDonatedFood(){
     this.serviceapi.getList('donations').then((data)=>{
       this.DonatedFood=data;
       console.log(this.DonatedFood);
     })
+  }
+
+  editDonation(id: number) {
+    this.router.navigate(['/donateform'], { queryParams: { id } });
+  }
+
+  deleteDonation(id: number) {
+    if (!confirm('Delete this donation? This cannot be undone.')) return;
+    this.serviceapi.deleteRecord('donations', id).then(() => {
+      this.DonatedFood = this.DonatedFood.filter((food: any) => food.id !== id);
+    }).catch((error) => {
+      console.error('Error deleting donation:', error);
+      alert(error?.error?.detail || 'Failed to delete donation.');
+    });
   }
 
   // Get status badge color
