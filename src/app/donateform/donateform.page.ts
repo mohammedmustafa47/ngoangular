@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Auth } from '../services/auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-donateform',
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   standalone:false,
 })
 export class DonateformPage implements OnInit {
-  
+
   // Form data object
   donationData = {
     id: undefined,  // undefined for new record, or set to existing ID for update
@@ -20,11 +20,13 @@ export class DonateformPage implements OnInit {
     description: ''
   };
 
-  constructor(private serviceapi: Auth, private router: Router) { }
+  constructor(private serviceapi: Auth, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    // If editing an existing donation, load it here
-    // this.loadDonation(donationId);
+    const id = this.route.snapshot.queryParamMap.get('id');
+    if (id) {
+      this.loadDonation(Number(id));
+    }
   }
 
   /**
@@ -39,17 +41,19 @@ export class DonateformPage implements OnInit {
       return;
     }
 
+    const isUpdate = this.donationData.id != undefined;
+
     // Call saveRecord - it automatically handles create vs update
     this.serviceapi.saveRecord('donations', this.donationData)
       .then((result) => {
         console.log('Donation saved successfully:', result);
-        alert('Donation saved successfully!');
-        
-        // Reset form after successful save
-        this.resetForm();
-        
-        // Optional: Navigate to another page
-        // this.router.navigate(['/donation-list']);
+        alert(isUpdate ? 'Donation updated successfully!' : 'Donation saved successfully!');
+
+        if (isUpdate) {
+          this.router.navigate(['/tab-donor/donatehistory']);
+        } else {
+          this.resetForm();
+        }
       })
       .catch((error) => {
         console.error('Error saving donation:', error);
