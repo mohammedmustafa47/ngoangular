@@ -49,6 +49,21 @@
           </ion-item>
         </div>
 
+        <!-- Pincode Field -->
+        <div class="form-group">
+          <ion-item lines="none" class="custom-item">
+            <ion-icon name="location-outline" slot="start" color="primary"></ion-icon>
+            <ion-label position="floating">Pincode *</ion-label>
+            <ion-input
+              type="text"
+              name="pincode"
+              [(ngModel)]="Registerobj.pincode"
+              placeholder="e.g. 581342"
+              required>
+            </ion-input>
+          </ion-item>
+        </div>
+
         <!-- Role Selection -->
         <div class="form-group">
           <ion-item lines="none" class="custom-item">
@@ -65,9 +80,6 @@
               </ion-select-option>
               <ion-select-option value="volunteer">
                 <ion-icon name="bicycle"></ion-icon> Volunteer
-              </ion-select-option>
-              <ion-select-option value="admin">
-                <ion-icon name="shield-checkmark"></ion-icon> Admin
               </ion-select-option>
             </ion-select>
           </ion-item>
@@ -118,7 +130,7 @@
           type="submit"
           size="large"
           class="auth-button"
-          [disabled]="!acceptedTerms || !Registerobj.username || !Registerobj.email || !Registerobj.role || !Registerobj.password">
+          [disabled]="!acceptedTerms || !Registerobj.username || !Registerobj.email || !Registerobj.pincode || !Registerobj.role || !Registerobj.password">
           <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
           Create Account
         </ion-button>

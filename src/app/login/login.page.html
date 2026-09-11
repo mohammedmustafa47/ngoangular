@@ -19,17 +19,17 @@
 
       <form (ngSubmit)="onLogin()">
         
-        <!-- Username Field -->
+        <!-- Email Field -->
         <div class="form-group">
           <ion-item lines="none" class="custom-item">
-            <ion-icon name="person-outline" slot="start" color="primary"></ion-icon>
-            <ion-label position="floating">Username</ion-label>
+            <ion-icon name="mail-outline" slot="start" color="primary"></ion-icon>
+            <ion-label position="floating">Email</ion-label>
             <ion-input
-              id="username-input"
-              type="text"
-              name="username"
-              [(ngModel)]="loginobj.username"
-              placeholder="Enter your username"
+              id="email-input"
+              type="email"
+              name="email"
+              [(ngModel)]="loginobj.email"
+              placeholder="Enter your email"
               required>
             </ion-input>
           </ion-item>
@@ -63,7 +63,7 @@
             <ion-checkbox [(ngModel)]="rememberMe" name="remember"></ion-checkbox>
             <label>Remember me</label>
           </div>
-          <a href="#" class="forgot-link" (click)="$event.preventDefault()">Forgot Password?</a>
+          <a routerLink="/forgot-password" class="forgot-link">Forgot Password?</a>
         </div>
 
         <!-- Login Button -->
@@ -73,7 +73,7 @@
           type="submit"
           size="large"
           class="auth-button"
-          [disabled]="!loginobj.username || !loginobj.password">
+          [disabled]="!loginobj.email || !loginobj.password">
           <ion-icon name="log-in-outline" slot="start"></ion-icon>
           Sign In
         </ion-button>

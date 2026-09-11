@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Auth } from '../services/auth.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-register',
@@ -12,13 +13,14 @@ export class RegisterPage implements OnInit {
   Registerobj={
     username:'',
     email:'',
+    pincode:'',
     role:'',
     password:'',
   }
   showPassword = false;
   acceptedTerms = false;
 
-  constructor(private route:Router,private serviceapi:Auth) { }
+  constructor(private route:Router,private serviceapi:Auth, private toastCtrl: ToastController) { }
 
   ngOnInit() {
   }
@@ -26,37 +28,41 @@ export class RegisterPage implements OnInit {
     onRegister(){
       // Validate form
       if (!this.acceptedTerms) {
-        alert('Please accept the terms and conditions');
+        this.showToast('Please accept the terms and conditions');
         return;
       }
 
-      if (!this.Registerobj.username || !this.Registerobj.email || !this.Registerobj.role || !this.Registerobj.password) {
-        alert('Please fill in all required fields');
+      if (!this.Registerobj.username || !this.Registerobj.email || !this.Registerobj.pincode || !this.Registerobj.role || !this.Registerobj.password) {
+        this.showToast('Please fill in all required fields');
         return;
       }
 
-      // Fix: Correct parameter order is (username, password, email, role)
-      this.serviceapi.register(this.Registerobj.username, this.Registerobj.password, this.Registerobj.email, this.Registerobj.role)
+      this.serviceapi.register(this.Registerobj.username, this.Registerobj.password, this.Registerobj.email, this.Registerobj.pincode, this.Registerobj.role)
       .subscribe({
       next: (res: any) => {
-        alert('Registration successful! Welcome to our community!');
-        console.warn(this.Registerobj);
-        this.route.navigate(['/login']);
+        this.showToast('Registration successful! A verification code has been sent to your email.', 'success');
+        this.route.navigate(['/verify-otp'], { queryParams: { email: this.Registerobj.email } });
       },
       error: (err) => {
         console.error('Registration error:', err);
-        if (err.error && err.error.non_field_errors) {
-          alert(err.error.non_field_errors[0]);
-        } else if (err.error && err.error.detail) {
-          alert(err.error.detail);
-        } else if (err.error && err.error.role) {
-          // Handle role validation error from backend
-          alert(err.error.role);
-        } else {
-          alert('Registration failed. Please try again.');
-        }
+        this.showToast(this.extractError(err));
       }
       });
+    }
+
+    private extractError(err: any): string {
+      const e = err.error;
+      if (e?.non_field_errors) return e.non_field_errors[0];
+      if (e?.detail) return e.detail;
+      if (e?.role) return Array.isArray(e.role) ? e.role[0] : e.role;
+      if (e?.pincode) return Array.isArray(e.pincode) ? e.pincode[0] : e.pincode;
+      if (e?.email) return Array.isArray(e.email) ? e.email[0] : e.email;
+      return 'Registration failed. Please try again.';
+    }
+
+    private async showToast(message: string, color: 'danger' | 'success' = 'danger') {
+      const toast = await this.toastCtrl.create({ message, duration: color === 'success' ? 2500 : 3000, color, position: 'top' });
+      toast.present();
     }
 
     // Get role icon
@@ -64,7 +70,6 @@ export class RegisterPage implements OnInit {
       switch(this.Registerobj.role) {
         case 'donor': return 'heart';
         case 'volunteer': return 'bicycle';
-        case 'admin': return 'shield-checkmark';
         default: return 'person';
       }
     }
@@ -74,7 +79,6 @@ export class RegisterPage implements OnInit {
       switch(this.Registerobj.role) {
         case 'donor': return 'success';
         case 'volunteer': return 'primary';
-        case 'admin': return 'danger';
         default: return 'medium';
       }
     }
@@ -84,7 +88,6 @@ export class RegisterPage implements OnInit {
       switch(this.Registerobj.role) {
         case 'donor': return 'Donor Account';
         case 'volunteer': return 'Volunteer Account';
-        case 'admin': return 'Admin Account';
         default: return '';
       }
     }
@@ -94,10 +97,8 @@ export class RegisterPage implements OnInit {
       switch(this.Registerobj.role) {
         case 'donor': return 'Donate surplus food to help those in need';
         case 'volunteer': return 'Pick up and deliver food donations';
-        case 'admin': return 'Manage users and monitor donations';
         default: return '';
       }
     }
-      
-  }
 
+  }

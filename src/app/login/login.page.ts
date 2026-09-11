@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Auth} from '../services/auth.service';
-import { HttpClient } from '@angular/common/http';
+import { Auth } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -10,99 +10,52 @@ import { Router } from '@angular/router';
   standalone:false,
 })
 export class LoginPage implements OnInit {
-  loginobj= {
-    "username":'',
-    "password":''
-  }
+  loginobj = {
+    email: '',
+    password: ''
+  };
   showPassword = false;
   rememberMe = false;
 
-  // auth: any;
-  constructor(private http:HttpClient,private route:Router, private serviceapi:Auth) { }
+  constructor(private route: Router, private serviceapi: Auth, private toastCtrl: ToastController) { }
 
   ngOnInit() {
   }
 
-  // onLogin(){
-  //   debugger;
-  //   this.http.post("http://127.0.0.1:8000/authapi/auth_login",this.loginobj).subscribe((res:any)=>{
-  //     if(res.result){
-  //       alert("login success")
-  //       this.route.navigateByUrl('home') 
-  //     }else{
-  //       alert(res.detail)
-  //     }
-  //   })
-  // }
-
-  // onLogin() {
-    
-  //   this.serviceapi.login(this.loginobj.username, this.loginobj.password).subscribe({
-  //     next: (res: any) => {
-  //       console.log('Response',res);
-  //       if (res.access) {
-  //         alert('Login successful!');
-  //         const role = res.role;
-
-  //         if (role == 'admin') this.route.navigate(['/admin']);
-  //         else if (role === 'donor') this.route.navigate(['/donor']);
-  //         else if (role === 'volunteer') this.route.navigate(['/volunteer']);
-  //         // else this.route.navigate(['/home']);
-  //       } else {
-  //         alert(res.detail||'unexpected response');
-  //       }
-  //     },
-  //     error: (err) => {
-  //       console.error('Login failed:', err);
-  //       alert('Invalid username or password');
-  //     }
-  //   });
-  // }
-
-
-//   onLogin() {
-//   this.serviceapi.login(this.loginobj.username, this.loginobj.password).subscribe({
-//     next: (res: any) => {
-//       console.log('Response', res);
-//       if (res.access) {
-//         alert('Login successful!');
-//         const role = res.user.role; // Access role from res.user.role
-//         if (role === 'admin') this.route.navigate(['/admin']);
-//         else if (role === 'donor') this.route.navigate(['/donor']);
-//         else if (role === 'volunteer') this.route.navigate(['/volunteer']);
-//         else this.route.navigate(['/home']);
-//       } else {
-//         alert(res.detail || 'unexpected response');
-//       }
-//     },
-//     error: (err) => {
-//       console.error('Login failed:', err);
-//       alert('Invalid username or password');
-//     }
-//   });
-// }
-
-onLogin() {
-  this.serviceapi.login(this.loginobj.username, this.loginobj.password).subscribe({
-    next: (res: any) => {
-      console.log('Response', res);
-      if (res.access) {
-        alert('Login successful!');
-        const role = res.user.role; // Access role from res.user.role
-        console.log('User role:', role); // Debug: Check the role value
-        if (role === 'admin') this.route.navigate(['/tab-admin']);
-        else if (role === 'donor') this.route.navigate(['/tab-donor']);
-        else if (role === 'volunteer') this.route.navigate(['/tab-volunteer']);
-        else this.route.navigate(['/home']);
-      } else {
-        alert(res.detail || 'unexpected response');
+  onLogin() {
+    this.serviceapi.login(this.loginobj.email, this.loginobj.password).subscribe({
+      next: (res: any) => {
+        if (res.access) {
+          const role = res.user.role;
+          if (role === 'super_admin') this.route.navigate(['/super-admin-dashboard']);
+          else if (role === 'admin') this.route.navigate(['/tab-admin']);
+          else if (role === 'donor') this.route.navigate(['/tab-donor']);
+          else if (role === 'volunteer') this.route.navigate(['/tab-volunteer']);
+          else this.route.navigate(['/home']);
+        } else {
+          this.showToast(res.detail || 'Unexpected response. Please try again.');
+        }
+      },
+      error: (err) => {
+        console.error('Login failed:', err);
+        this.showToast(this.extractError(err));
       }
-    },
-    error: (err) => {
-      console.error('Login failed:', err);
-      alert('Invalid username or password');
+    });
+  }
+
+  private extractError(err: any): string {
+    if (err.status === 403) {
+      return err.error?.detail || 'Email not verified. Please check your inbox for the verification code.';
     }
-  });
-}
+    if (err.status === 401) {
+      return 'Invalid email or password.';
+    }
+    return err.error?.detail || 'Login failed. Please try again.';
+  }
+
+  private async showToast(message: string) {
+    const toast = await this.toastCtrl.create({ message, duration: 3000, color: 'danger', position: 'top' });
+    toast.present();
+  }
 
 }
