@@ -19,79 +19,72 @@ const routes: Routes = [
     loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
   },
   {
-    path: 'admin',
-    loadChildren: () => import('./admin/admin.module').then( m => m.AdminPageModule),
-     canActivate: [RoleGuard], data: { expectedRole: 'admin' }
-  },
-  {
-    path: 'donor',
-    loadChildren: () => import('./donor/donor.module').then( m => m.DonorPageModule)
-  },
-  {
-    path: 'volunteer',
-    loadChildren: () => import('./volunteer/volunteer.module').then( m => m.VolunteerPageModule)
-  },
-  {
     path: 'tab-admin',
-    loadChildren: () => import('./tab-admin/tab-admin.module').then( m => m.TabAdminPageModule)
+    loadChildren: () => import('./tab-admin/tab-admin.module').then( m => m.TabAdminPageModule),
+    canActivate: [RoleGuard], data: { expectedRole: ['admin', 'super_admin'] }
   },
   {
     path: 'tab-donor',
-    loadChildren: () => import('./tab-donor/tab-donor.module').then( m => m.TabDonorPageModule)
+    loadChildren: () => import('./tab-donor/tab-donor.module').then( m => m.TabDonorPageModule),
+    canActivate: [RoleGuard], data: { expectedRole: 'donor' }
   },
   {
     path: 'tab-volunteer',
-    loadChildren: () => import('./tab-volunteer/tab-volunteer.module').then( m => m.TabVolunteerPageModule)
+    loadChildren: () => import('./tab-volunteer/tab-volunteer.module').then( m => m.TabVolunteerPageModule),
+    canActivate: [RoleGuard], data: { expectedRole: 'volunteer' }
   },
-  // {
-  //   path: 'vprofile',
-  //   loadChildren: () => import('./vprofile/vprofile.module').then( m => m.VprofilePageModule)
-  // },
-  // {
-  //   path: 'vhistory',
-  //   loadChildren: () => import('./vhistory/vhistory.module').then( m => m.VhistoryPageModule)
-  // },
-  // {
-  //   path: 'vpickup',
-  //   loadChildren: () => import('./vpickup/vpickup.module').then( m => m.VpickupPageModule)
-  // },
-  // {
-  //   path: 'donorprofile',
-  //   loadChildren: () => import('./donorprofile/donorprofile.module').then( m => m.DonorprofilePageModule)
-  // },
-  // {
-  //   path: 'vdashboard',
-  //   loadChildren: () => import('./vdashboard/vdashboard.module').then( m => m.VdashboardPageModule)
-  // },
-  // {
-  //   path: 'donatehistory',
-  //   loadChildren: () => import('./donatehistory/donatehistory.module').then( m => m.DonatehistoryPageModule)
-  // },
-  // {
-  //   path: 'donateform',
-  //   loadChildren: () => import('./donateform/donateform.module').then( m => m.DonateformPageModule)
-  // },
-  // {
-  //   path: 'donordashboard',
-  //   loadChildren: () => import('./donordashboard/donordashboard.module').then( m => m.DonordashboardPageModule)
-  // },
-  // {
-  //   path: 'adminreport',
-  //   loadChildren: () => import('./adminreport/adminreport.module').then( m => m.AdminreportPageModule)
-  // },
-  // {
-  //   path: 'adminsuser',
-  //   loadChildren: () => import('./adminsuser/adminsuser.module').then( m => m.AdminsuserPageModule)
-  // },
-  // {
-  //   path: 'admindonation',
-  //   loadChildren: () => import('./admindonation/admindonation.module').then( m => m.AdmindonationPageModule)
-  // },
-  // {
-  //   path: 'admindashboard',
-  //   loadChildren: () => import('./admindashboard/admindashboard.module').then( m => m.AdmindashboardPageModule)
-  // },
-
+  {
+    path: 'verify-otp',
+    loadChildren: () => import('./verify-otp/verify-otp.module').then( m => m.VerifyOtpPageModule)
+  },
+  {
+    path: 'forgot-password',
+    loadChildren: () => import('./forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule)
+  },
+  {
+    path: 'reset-password',
+    loadChildren: () => import('./reset-password/reset-password.module').then( m => m.ResetPasswordPageModule)
+  },
+  {
+    path: 'adminprofile',
+    loadChildren: () => import('./adminprofile/adminprofile.module').then( m => m.AdminprofilePageModule),
+    canActivate: [RoleGuard], data: { expectedRole: ['admin', 'super_admin'] }
+  },
+  {
+    path: 'super-admin-dashboard',
+    loadChildren: () => import('./super-admin-dashboard/super-admin-dashboard.module').then( m => m.SuperAdminDashboardPageModule),
+    canActivate: [RoleGuard], data: { expectedRole: 'super_admin' }
+  },
+  {
+    path: 'super-admin-areas',
+    loadChildren: () => import('./super-admin-areas/super-admin-areas.module').then( m => m.SuperAdminAreasPageModule),
+    canActivate: [RoleGuard], data: { expectedRole: 'super_admin' }
+  },
+  {
+    path: 'super-admin-pending-signups',
+    loadChildren: () => import('./super-admin-pending-signups/super-admin-pending-signups.module').then( m => m.SuperAdminPendingSignupsPageModule),
+    canActivate: [RoleGuard], data: { expectedRole: 'super_admin' }
+  },
+  {
+    path: 'super-admin-unattended-donations',
+    loadChildren: () => import('./super-admin-unattended-donations/super-admin-unattended-donations.module').then( m => m.SuperAdminUnattendedDonationsPageModule),
+    canActivate: [RoleGuard], data: { expectedRole: 'super_admin' }
+  },
+  {
+    path: 'super-admin-create-admin',
+    loadChildren: () => import('./super-admin-create-admin/super-admin-create-admin.module').then( m => m.SuperAdminCreateAdminPageModule),
+    canActivate: [RoleGuard], data: { expectedRole: 'super_admin' }
+  },
+  {
+    path: 'super-admin-area-detail/:areaId',
+    loadChildren: () => import('./super-admin-area-detail/super-admin-area-detail.module').then( m => m.SuperAdminAreaDetailPageModule),
+    canActivate: [RoleGuard], data: { expectedRole: 'super_admin' }
+  },
+  {
+    path: 'super-admin-all-users',
+    loadChildren: () => import('./super-admin-all-users/super-admin-all-users.module').then( m => m.SuperAdminAllUsersPageModule),
+    canActivate: [RoleGuard], data: { expectedRole: 'super_admin' }
+  },
 ];
 
 @NgModule({

@@ -10,12 +10,19 @@ import { MenuController } from '@ionic/angular';
   standalone: false,
 })
 export class AppComponent {
-  constructor(private route:Router, private service:Auth,private menuCtrl: MenuController) {}
+  constructor(private route: Router, private service: Auth, private menuCtrl: MenuController) {}
+
+  async goToProfile() {
+    await this.menuCtrl.close();
+    const role = this.service.getUserRole();
+    if (role === 'donor') this.route.navigate(['/tab-donor/donorprofile']);
+    else if (role === 'volunteer') this.route.navigate(['/tab-volunteer/vprofile']);
+    else if (role === 'admin' || role === 'super_admin') this.route.navigate(['/adminprofile']);
+  }
 
   async logout() {
-    localStorage.removeItem('token');
     await this.menuCtrl.close();
-    this.route.navigate(['/login']);
+    this.service.logout();
   }
-  
+
 }
