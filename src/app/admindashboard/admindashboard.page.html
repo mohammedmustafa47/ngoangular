@@ -13,7 +13,7 @@
     </div>
 
     <div *ngIf="error && !loading" class="ion-text-center ion-padding">
-      <p>Could not load analytics. Please try again later.</p>
+      <p>{{ errorMessage }}</p>
     </div>
 
     <ng-container *ngIf="!loading && !error">
@@ -69,6 +69,16 @@
       </div>
 
       <aside class="right">
+        <div class="card panel my-area" *ngIf="myArea">
+          <div class="panel-header"><h4>My Area</h4></div>
+          <div class="panel-body">
+            <div class="perf"><span>Name</span><strong>{{ myArea.name }}</strong></div>
+            <div class="perf"><span>Pincodes</span><strong>{{ myArea.pincodes?.join(', ') }}</strong></div>
+            <div class="perf"><span>Status</span><strong>{{ myArea.is_active ? 'Active' : 'Inactive' }}</strong></div>
+            <div class="perf"><span>Opened</span><strong>{{ myArea.created_at | date:'mediumDate' }}</strong></div>
+          </div>
+        </div>
+
         <div class="card panel reports">
           <div class="panel-header"><h4>Downloadable Reports</h4></div>
           <div class="panel-body reports-list">

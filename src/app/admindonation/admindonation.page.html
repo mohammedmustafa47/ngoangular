@@ -115,7 +115,7 @@
                 <ion-icon name="location-outline"></ion-icon>
                 <div>
                   <span class="label">Pickup Address</span>
-                  <span class="value">{{allfood.pickup_address || allfood.pickup_location || 'N/A'}}</span>
+                  <span class="value">{{allfood.pickup_address || allfood.pickup_location || 'N/A'}}<ng-container *ngIf="allfood.pickup_pincode"> - {{ allfood.pickup_pincode }}</ng-container></span>
                 </div>
               </div>
             </div>

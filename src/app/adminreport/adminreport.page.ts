@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Auth } from '../services/auth.service';
+import { describeHttpError } from '../shared/http-error/http-error';
 import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
@@ -14,6 +15,7 @@ export class AdminreportPage implements OnInit, OnDestroy {
 
   loading = true;
   error = false;
+  errorMessage = '';
 
   totalDonations = 0;
   totalDonors = 0;
@@ -38,6 +40,7 @@ export class AdminreportPage implements OnInit, OnDestroy {
         console.error('Failed to load area-admin analytics:', err);
         this.loading = false;
         this.error = true;
+        this.errorMessage = describeHttpError(err, 'load your reports');
       }
     });
   }

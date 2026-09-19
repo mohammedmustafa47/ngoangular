@@ -1,0 +1,87 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="backHref"></ion-back-button>
+    </ion-buttons>
+    <ion-title>My Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="page-container">
+
+    <div *ngIf="loading" class="ion-text-center ion-padding">
+      <ion-spinner></ion-spinner>
+    </div>
+
+    <div *ngIf="error && !loading" class="ion-text-center ion-padding">
+      <p>Could not load your profile. Please try again later.</p>
+    </div>
+
+    <ng-container *ngIf="!loading && !error && profile">
+      <div class="profile-grid">
+        <div class="left">
+          <ion-card class="profile-card">
+            <ion-card-content class="profile-content">
+              <div class="avatar-circle">{{ profile.username?.charAt(0)?.toUpperCase() }}</div>
+              <div class="profile-info">
+                <h2>{{ profile.username }}</h2>
+                <p class="muted">{{ roleLabel }} · Joined {{ profile.date_joined | date:'mediumDate' }}</p>
+              </div>
+              <div class="profile-actions">
+                <ion-button size="small" color="danger" fill="clear" (click)="logout()">
+                  <ion-icon name="log-out-outline" slot="start"></ion-icon>
+                  Logout
+                </ion-button>
+              </div>
+            </ion-card-content>
+          </ion-card>
+
+          <ion-card class="pending-banner" *ngIf="profile.area === 'pending'">
+            <ion-card-content class="pending-content">
+              <ion-icon name="time-outline"></ion-icon>
+              <div>
+                <strong>Area not assigned yet</strong>
+                <p>Your pincode didn't match an existing area. A Super Admin will assign you to one soon.</p>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </div>
+
+        <aside class="right">
+          <ion-card class="contact-card">
+            <ion-card-header>
+              <ion-card-title>Account Details</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <div class="contact-row">
+                <ion-icon name="mail-outline"></ion-icon>
+                <div><div class="label">Email</div><div class="value">{{ profile.email }}</div></div>
+              </div>
+              <div class="contact-row">
+                <ion-icon name="shield-outline"></ion-icon>
+                <div><div class="label">Role</div><div class="value">{{ roleLabel }}</div></div>
+              </div>
+              <div class="contact-row" *ngIf="profile.role !== 'super_admin'">
+                <ion-icon name="location-outline"></ion-icon>
+                <div><div class="label">Area</div><div class="value">{{ profile.area === 'pending' ? 'Pending assignment' : profile.area }}</div></div>
+              </div>
+              <div class="contact-row" *ngIf="profile.pincode">
+                <ion-icon name="pin-outline"></ion-icon>
+                <div><div class="label">Pincode</div><div class="value">{{ profile.pincode }}</div></div>
+              </div>
+              <div class="contact-row">
+                <ion-icon [name]="profile.is_email_verified ? 'checkmark-circle-outline' : 'alert-circle-outline'"></ion-icon>
+                <div><div class="label">Email Verified</div><div class="value">{{ profile.is_email_verified ? 'Yes' : 'No' }}</div></div>
+              </div>
+              <div class="contact-row" *ngIf="profile.last_login">
+                <ion-icon name="time-outline"></ion-icon>
+                <div><div class="label">Last Login</div><div class="value">{{ profile.last_login | date:'medium' }}</div></div>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </aside>
+      </div>
+    </ng-container>
+  </div>
+</ion-content>

@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Auth } from '../services/auth.service';
+import { describeHttpError } from '../shared/http-error/http-error';
 import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
@@ -14,6 +15,7 @@ export class AdmindashboardPage implements OnInit, OnDestroy {
 
   loading = true;
   error = false;
+  errorMessage = '';
 
   totalDonations = 0;
   totalDonors = 0;
@@ -22,6 +24,7 @@ export class AdmindashboardPage implements OnInit, OnDestroy {
   successRate = 0;
   avgDeliveryHours: number | null = null;
   topVolunteer: { username: string; delivered: number } | null = null;
+  myArea: any = null;
 
   private lineChart?: Chart;
   private statusChart?: Chart;
@@ -34,12 +37,14 @@ export class AdmindashboardPage implements OnInit, OnDestroy {
       next: (data: any) => {
         this.applyData(data);
         this.loading = false;
+        this.loadMyArea(data.area);
         setTimeout(() => this.initCharts(data), 0);
       },
       error: (err) => {
         console.error('Failed to load area-admin analytics:', err);
         this.loading = false;
         this.error = true;
+        this.errorMessage = describeHttpError(err, 'load your dashboard');
       }
     });
   }
@@ -61,6 +66,22 @@ export class AdmindashboardPage implements OnInit, OnDestroy {
     this.avgDeliveryHours = data.avg_delivery_hours ?? null;
     const leaderboard = data.leaderboard || [];
     this.topVolunteer = leaderboard.length > 0 ? leaderboard[0] : null;
+  }
+
+  /** Read-only "My Area" info card — resolves the area name from analytics into the full area object (pincodes, is_active). */
+  private loadMyArea(area: any) {
+    if (!area || area === 'pending') return;
+    if (typeof area === 'object') {
+      this.myArea = area;
+      return;
+    }
+    this.service.getAreas().subscribe({
+      next: (data: any) => {
+        const areas = Array.isArray(data) ? data : (data?.results ?? []);
+        this.myArea = areas.find((a: any) => a.name === area) || null;
+      },
+      error: (err) => console.error('Failed to load area info:', err)
+    });
   }
 
   private initCharts(data: any) {
