@@ -33,8 +33,8 @@
           Verify Email
         </ion-button>
 
-        <ion-button expand="block" fill="clear" type="button" [disabled]="resending || !email" (click)="onResend()">
-          Resend Code
+        <ion-button expand="block" fill="clear" type="button" [disabled]="resending || !email || cooldown > 0" (click)="onResend()">
+          {{ cooldown > 0 ? 'Resend Code (' + cooldown + 's)' : 'Resend Code' }}
         </ion-button>
 
       </form>

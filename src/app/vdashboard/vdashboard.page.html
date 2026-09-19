@@ -5,26 +5,35 @@
       <p class="subtitle">Your upcoming pickups, hours and performance</p>
     </div>
 
+    <div *ngIf="loading" class="ion-text-center ion-padding">
+      <ion-spinner></ion-spinner>
+    </div>
+
+    <div *ngIf="error && !loading" class="ion-text-center ion-padding">
+      <p>{{ errorMessage }}</p>
+    </div>
+
+    <ng-container *ngIf="!loading && !error">
     <section class="kpis">
       <div class="kpi">
         <div class="kpi-badge bg-gradient-blue"><ion-icon name="calendar-outline"></ion-icon></div>
-        <div class="kpi-info"><div class="kpi-value" data-target="12">12</div><div class="kpi-label">Assigned Pickups</div></div>
+        <div class="kpi-info"><div class="kpi-value">{{ assigned }}</div><div class="kpi-label">Currently Picked Up</div></div>
       </div>
       <div class="kpi">
         <div class="kpi-badge bg-gradient-green"><ion-icon name="checkmark-done-outline"></ion-icon></div>
-        <div class="kpi-info"><div class="kpi-value" data-target="9">9</div><div class="kpi-label">Completed</div></div>
+        <div class="kpi-info"><div class="kpi-value">{{ completed }}</div><div class="kpi-label">Completed</div></div>
       </div>
       <div class="kpi">
         <div class="kpi-badge bg-gradient-purple"><ion-icon name="time-outline"></ion-icon></div>
-        <div class="kpi-info"><div class="kpi-value" data-target="42">42</div><div class="kpi-label">Hours Logged</div></div>
+        <div class="kpi-info"><div class="kpi-value">{{ avgDeliveryHours !== null ? (avgDeliveryHours | number:'1.1-1') + ' hrs' : '—' }}</div><div class="kpi-label">Avg Delivery Time</div></div>
       </div>
       <div class="kpi">
         <div class="kpi-badge bg-gradient-indigo"><ion-icon name="trending-up-outline"></ion-icon></div>
-        <div class="kpi-info"><div class="kpi-value" data-target="95">95%</div><div class="kpi-label">Success Rate</div></div>
+        <div class="kpi-info"><div class="kpi-value">{{ successRate }}%</div><div class="kpi-label">Success Rate</div></div>
       </div>
       <div class="kpi">
-        <div class="kpi-badge bg-gradient-yellow"><ion-icon name="location-outline"></ion-icon></div>
-        <div class="kpi-info"><div class="kpi-value" data-target="3">3</div><div class="kpi-label">Upcoming Pickups</div></div>
+        <div class="kpi-badge bg-gradient-yellow"><ion-icon name="close-circle-outline"></ion-icon></div>
+        <div class="kpi-info"><div class="kpi-value">{{ cancelled }}</div><div class="kpi-label">Cancelled</div></div>
       </div>
     </section>
 
@@ -32,8 +41,8 @@
       <div class="left">
         <div class="card panel">
           <div class="panel-header">
-            <h3>My Pickups Over Time</h3>
-            <p class="muted">Last 6 weeks</p>
+            <h3>Deliveries Over Time</h3>
+            <p class="muted">Recent activity</p>
           </div>
           <div class="panel-body">
             <canvas id="pickupsLine" class="chart"></canvas>
@@ -49,7 +58,7 @@
           </div>
           <div class="col">
             <div class="card panel small">
-              <div class="panel-header"><h4>Hours This Week</h4></div>
+              <div class="panel-header"><h4>Status Breakdown</h4></div>
               <div class="panel-body"><canvas id="hoursBar" class="chart small"></canvas></div>
             </div>
           </div>
@@ -94,5 +103,6 @@
         </div>
       </aside>
     </div>
+    </ng-container>
   </div>
 </ion-content>

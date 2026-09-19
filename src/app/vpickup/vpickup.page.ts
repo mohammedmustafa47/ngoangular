@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Auth } from '../services/auth.service';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-vpickup',
@@ -10,8 +9,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class VpickupPage implements OnInit {
   DonationList: any;
-  
-  constructor(private serviceapi: Auth, private http: HttpClient) { }
+
+  constructor(private serviceapi: Auth) { }
 
   ngOnInit() {
     this.GetDonationList();
@@ -31,15 +30,11 @@ export class VpickupPage implements OnInit {
   }
 
   pickDonation(donationId: number) {
-    // API endpoint: http://127.0.0.1:8000/authapi/donations/<id>/pick_donation/
-    const url = `http://127.0.0.1:8000/authapi/donations/${donationId}/pick_donation/`;
-
-    // Make an authenticated POST request
-    this.http.post(url, {}).subscribe({
+    this.serviceapi.postAction(`donations/${donationId}/pick_donation/`).subscribe({
       next: (res: any) => {
         console.log('Success:', res);
         alert(res.message || 'Donation successfully picked!');
-        
+
         // Refresh the list to show the updated status
         this.GetDonationList();
       },
@@ -52,15 +47,11 @@ export class VpickupPage implements OnInit {
   }
 
   updateStatus(donationId: number, newStatus: string) {
-    // API endpoint: http://127.0.0.1:8000/authapi/donations/<id>/update_status/
-    const url = `http://127.0.0.1:8000/authapi/donations/${donationId}/update_status/`;
-    
-    // Make an authenticated POST request with status in body
-    this.http.post(url, { status: newStatus }).subscribe({
+    this.serviceapi.postAction(`donations/${donationId}/update_status/`, { status: newStatus }).subscribe({
       next: (res: any) => {
         console.log('Status updated:', res);
         alert(res.message || `Status updated to ${newStatus}`);
-        
+
         // Refresh the list to remove the completed donation
         this.GetDonationList();
       },

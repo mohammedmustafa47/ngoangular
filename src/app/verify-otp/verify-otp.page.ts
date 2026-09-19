@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Auth } from '../services/auth.service';
 
@@ -8,16 +8,23 @@ import { Auth } from '../services/auth.service';
   styleUrls: ['./verify-otp.page.scss'],
   standalone: false,
 })
-export class VerifyOtpPage implements OnInit {
+export class VerifyOtpPage implements OnInit, OnDestroy {
   email = '';
   otp = '';
   submitting = false;
   resending = false;
+  cooldown = 0;
+
+  private cooldownTimer: any;
 
   constructor(private route: ActivatedRoute, private router: Router, private serviceapi: Auth) { }
 
   ngOnInit() {
     this.email = this.route.snapshot.queryParamMap.get('email') || '';
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.cooldownTimer);
   }
 
   onVerify() {
@@ -41,8 +48,7 @@ export class VerifyOtpPage implements OnInit {
   }
 
   onResend() {
-    if (!this.email) {
-      alert('Missing email address');
+    if (!this.email || this.cooldown > 0) {
       return;
     }
 
@@ -51,11 +57,28 @@ export class VerifyOtpPage implements OnInit {
       next: () => {
         this.resending = false;
         alert('A new verification code has been sent to your email.');
+        this.startCooldown(30);
       },
       error: (err) => {
         this.resending = false;
-        alert(err.error?.detail || 'Could not resend code. Please wait a moment and try again.');
+        if (err.status === 429) {
+          alert('Too many requests. Please wait a bit before requesting another code.');
+          this.startCooldown(30);
+        } else {
+          alert(err.error?.detail || 'Could not resend code. Please try again.');
+        }
       }
     });
+  }
+
+  private startCooldown(seconds: number) {
+    clearInterval(this.cooldownTimer);
+    this.cooldown = seconds;
+    this.cooldownTimer = setInterval(() => {
+      this.cooldown--;
+      if (this.cooldown <= 0) {
+        clearInterval(this.cooldownTimer);
+      }
+    }, 1000);
   }
 }
