@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { TabVolunteerPageRoutingModule } from './tab-volunteer-routing.module';
+import { SharedModule } from '../shared/shared.module';
 
 import { TabVolunteerPage } from './tab-volunteer.page';
 
@@ -13,6 +14,7 @@ import { TabVolunteerPage } from './tab-volunteer.page';
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedModule,
     TabVolunteerPageRoutingModule
   ],
   declarations: [TabVolunteerPage]

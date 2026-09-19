@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { TabDonorPageRoutingModule } from './tab-donor-routing.module';
+import { SharedModule } from '../shared/shared.module';
 
 import { TabDonorPage } from './tab-donor.page';
 
@@ -13,6 +14,7 @@ import { TabDonorPage } from './tab-donor.page';
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedModule,
     TabDonorPageRoutingModule
   ],
   declarations: [TabDonorPage]

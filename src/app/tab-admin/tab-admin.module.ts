@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { TabAdminPageRoutingModule } from './tab-admin-routing.module';
+import { SharedModule } from '../shared/shared.module';
 
 import { TabAdminPage } from './tab-admin.page';
 
@@ -13,6 +14,7 @@ import { TabAdminPage } from './tab-admin.page';
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedModule,
     TabAdminPageRoutingModule
   ],
   declarations: [TabAdminPage]
