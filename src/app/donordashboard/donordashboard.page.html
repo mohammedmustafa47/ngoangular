@@ -10,7 +10,7 @@
     </div>
 
     <div *ngIf="error && !loading" class="ion-text-center ion-padding">
-      <p>Could not load analytics. Please try again later.</p>
+      <p>{{ errorMessage }}</p>
     </div>
 
     <ng-container *ngIf="!loading && !error">

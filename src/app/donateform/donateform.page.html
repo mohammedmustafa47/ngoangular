@@ -59,16 +59,34 @@
             </ion-item>
           </div>
 
-          <!-- Pickup Location -->
+          <!-- Pickup Pincode: decides which area's team receives this donation -->
+          <div class="form-group">
+            <ion-item lines="none" class="custom-item">
+              <ion-icon name="pin-outline" slot="start" color="primary"></ion-icon>
+              <ion-label position="floating">Pickup Pincode *</ion-label>
+              <ion-input
+                type="text"
+                inputmode="numeric"
+                [(ngModel)]="donationData.pickup_pincode"
+                (ionInput)="pincodeError = ''"
+                name="pickup_pincode"
+                placeholder="Pincode where food will be picked up"
+                required>
+              </ion-input>
+            </ion-item>
+            <ion-note color="danger" *ngIf="pincodeError">{{ pincodeError }}</ion-note>
+          </div>
+
+          <!-- Pickup Address -->
           <div class="form-group">
             <ion-item lines="none" class="custom-item">
               <ion-icon name="location-outline" slot="start" color="primary"></ion-icon>
-              <ion-label position="floating">Pickup Location *</ion-label>
+              <ion-label position="floating">Pickup Address *</ion-label>
               <ion-input 
                 type="text" 
                 [(ngModel)]="donationData.pickup_address" 
                 name="pickup_location"
-                placeholder="Enter your address"
+                placeholder="Flat / street / landmark"
                 required>
               </ion-input>
             </ion-item>

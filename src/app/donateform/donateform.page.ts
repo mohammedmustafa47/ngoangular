@@ -16,9 +16,12 @@ export class DonateformPage implements OnInit {
     item_name: '',
     quantity: '',
     pickup_address: '',
+    pickup_pincode: '',
     contact_number: '',
     description: ''
   };
+
+  pincodeError = '';
 
   constructor(private serviceapi: Auth, private router: Router, private route: ActivatedRoute) { }
 
@@ -26,7 +29,21 @@ export class DonateformPage implements OnInit {
     const id = this.route.snapshot.queryParamMap.get('id');
     if (id) {
       this.loadDonation(Number(id));
+    } else {
+      this.prefillPincode();
     }
+  }
+
+  /** Default the pickup pincode to the donor's registered one; they can change it. */
+  prefillPincode() {
+    this.serviceapi.getProfile().subscribe({
+      next: (profile: any) => {
+        if (!this.donationData.pickup_pincode) {
+          this.donationData.pickup_pincode = profile?.pincode || '';
+        }
+      },
+      error: () => {}
+    });
   }
 
   /**
@@ -36,7 +53,8 @@ export class DonateformPage implements OnInit {
    */
   SaveFood() {
     // Validate form
-    if (!this.donationData.item_name || !this.donationData.quantity) {
+    this.pincodeError = '';
+    if (!this.donationData.item_name || !this.donationData.quantity || !this.donationData.pickup_pincode) {
       alert('Please fill in all required fields');
       return;
     }
@@ -57,7 +75,12 @@ export class DonateformPage implements OnInit {
       })
       .catch((error) => {
         console.error('Error saving donation:', error);
-        alert('Failed to save donation. Please try again.');
+        const pin = error?.error?.pickup_pincode;
+        if (pin) {
+          this.pincodeError = Array.isArray(pin) ? pin[0] : pin;
+        } else {
+          alert('Failed to save donation. Please try again.');
+        }
       });
   }
 
@@ -67,10 +90,17 @@ export class DonateformPage implements OnInit {
   loadDonation(donationId: number) {
     this.serviceapi.getData('donations/' + donationId + '/', '')
       .then((data) => {
+        if (data.status !== 'pending') {
+          alert('This donation can no longer be edited — it has already been picked up.');
+          this.router.navigate(['/tab-donor/donatehistory']);
+          return;
+        }
         this.donationData = data;
       })
       .catch((error) => {
         console.error('Error loading donation:', error);
+        alert('Could not load this donation.');
+        this.router.navigate(['/tab-donor/donatehistory']);
       });
   }
 
@@ -83,9 +113,11 @@ export class DonateformPage implements OnInit {
       item_name: '',
       quantity: '',
       pickup_address: '',
-      
+      pickup_pincode: '',
       contact_number: '',
       description: ''
     };
+    this.pincodeError = '';
+    this.prefillPincode();
   }
 }

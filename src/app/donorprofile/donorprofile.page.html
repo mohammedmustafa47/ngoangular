@@ -1,95 +1,78 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Donor Profile</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="ion-padding">
   <div class="page-container">
     <div class="header-section">
       <h1>Donor Profile</h1>
-      <p class="subtitle">Your account details and recent activity</p>
+      <p class="subtitle">Your account details</p>
     </div>
 
-    <div class="profile-grid">
-      <div class="left">
-        <ion-card class="profile-card">
-          <ion-card-content class="profile-content">
-            <div class="avatar-circle"><img src="assets/icon/avatar-placeholder.png" alt="D"/></div>
-            <div class="profile-info">
-              <h2>Jane Doe</h2>
-              <p class="muted">Donor since Jan 2023</p>
-              <div class="roles">Individual Donor</div>
-            </div>
-            <div class="profile-actions">
-              <ion-button size="small" fill="outline">Edit Profile</ion-button>
-              <ion-button size="small" color="danger" fill="clear">Logout</ion-button>
-            </div>
-          </ion-card-content>
-        </ion-card>
+    <div *ngIf="loading" class="ion-text-center ion-padding">
+      <ion-spinner></ion-spinner>
+    </div>
 
-        <div class="stats-grid">
-          <ion-card class="stat-card">
-            <ion-card-content>
-              <div class="stat-title">Total Donations</div>
-              <div class="stat-value">24</div>
+    <div *ngIf="error && !loading" class="ion-text-center ion-padding">
+      <p>Could not load your profile. Please try again later.</p>
+    </div>
+
+    <ng-container *ngIf="!loading && !error && profile">
+      <div class="profile-grid">
+        <div class="left">
+          <ion-card class="profile-card">
+            <ion-card-content class="profile-content">
+              <div class="avatar-circle">{{ profile.username?.charAt(0)?.toUpperCase() }}</div>
+              <div class="profile-info">
+                <h2>{{ profile.username }}</h2>
+                <p class="muted">Donor · Joined {{ profile.date_joined | date:'mediumDate' }}</p>
+              </div>
+              <div class="profile-actions">
+                <ion-button size="small" color="danger" fill="clear" (click)="logout()">
+                  <ion-icon name="log-out-outline" slot="start"></ion-icon>
+                  Logout
+                </ion-button>
+              </div>
             </ion-card-content>
           </ion-card>
-          <ion-card class="stat-card">
-            <ion-card-content>
-              <div class="stat-title">Food Donated</div>
-              <div class="stat-value">320 kg</div>
-            </ion-card-content>
-          </ion-card>
-          <ion-card class="stat-card success">
-            <ion-card-content>
-              <div class="stat-title">Fulfillment</div>
-              <div class="stat-value">92%</div>
+
+          <ion-card class="pending-banner" *ngIf="profile.area === 'pending'">
+            <ion-card-content class="pending-content">
+              <ion-icon name="time-outline"></ion-icon>
+              <div>
+                <strong>Area not assigned yet</strong>
+                <p>Your pincode didn't match an existing area. A Super Admin will assign you to one soon — this doesn't affect your ability to create donations.</p>
+              </div>
             </ion-card-content>
           </ion-card>
         </div>
 
-        <ion-card class="activity-card">
-          <ion-card-header>
-            <ion-card-title>Recent Donations</ion-card-title>
-            <ion-card-subtitle class="muted">Latest 5</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            <ul class="activity-list">
-              <li><strong>#D1001</strong> — 5 kg · <span class="muted">2 days ago</span></li>
-              <li><strong>#D0998</strong> — 3 kg · <span class="muted">1 week ago</span></li>
-              <li><strong>#D0987</strong> — 8 kg · <span class="muted">1 month ago</span></li>
-            </ul>
-          </ion-card-content>
-        </ion-card>
+        <aside class="right">
+          <ion-card class="contact-card">
+            <ion-card-header>
+              <ion-card-title>Account Details</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <div class="contact-row">
+                <ion-icon name="mail-outline"></ion-icon>
+                <div><div class="label">Email</div><div class="value">{{ profile.email }}</div></div>
+              </div>
+              <div class="contact-row">
+                <ion-icon name="location-outline"></ion-icon>
+                <div><div class="label">Area</div><div class="value">{{ profile.area === 'pending' ? 'Pending assignment' : profile.area }}</div></div>
+              </div>
+              <div class="contact-row">
+                <ion-icon name="pin-outline"></ion-icon>
+                <div><div class="label">Pincode</div><div class="value">{{ profile.pincode }}</div></div>
+              </div>
+              <div class="contact-row">
+                <ion-icon [name]="profile.is_email_verified ? 'checkmark-circle-outline' : 'alert-circle-outline'"></ion-icon>
+                <div><div class="label">Email Verified</div><div class="value">{{ profile.is_email_verified ? 'Yes' : 'No' }}</div></div>
+              </div>
+              <div class="contact-row" *ngIf="profile.last_login">
+                <ion-icon name="time-outline"></ion-icon>
+                <div><div class="label">Last Login</div><div class="value">{{ profile.last_login | date:'medium' }}</div></div>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </aside>
       </div>
-
-      <aside class="right">
-        <ion-card class="contact-card">
-          <ion-card-header>
-            <ion-card-title>Contact</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <div class="contact-row"><ion-icon name="person-circle-outline"></ion-icon><div><div class="label">Full name</div><div class="value">Jane Doe</div></div></div>
-            <div class="contact-row"><ion-icon name="call-outline"></ion-icon><div><div class="label">Phone</div><div class="value">+1 555 123 4567</div></div></div>
-            <div class="contact-row"><ion-icon name="mail-outline"></ion-icon><div><div class="label">Email</div><div class="value">jane.doe@example.com</div></div></div>
-            <div class="contact-row"><ion-icon name="location-outline"></ion-icon><div><div class="label">Location</div><div class="value">Springfield</div></div></div>
-          </ion-card-content>
-        </ion-card>
-
-        <ion-card class="notes-card">
-          <ion-card-header>
-            <ion-card-title>Notes</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <p>Preferred pickup times: Weekdays after 5pm. Please call before pickup.</p>
-          </ion-card-content>
-        </ion-card>
-      </aside>
-    </div>
-
+    </ng-container>
   </div>
 </ion-content>
