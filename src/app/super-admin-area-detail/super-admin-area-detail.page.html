@@ -1,0 +1,103 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/super-admin-dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ areaName || 'Area' }} Dashboard</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <div *ngIf="loading" class="ion-text-center ion-padding">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <div *ngIf="error && !loading" class="ion-text-center ion-padding">
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <ng-container *ngIf="!loading && !error">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6" size-md="3">
+          <ion-card class="kpi-card">
+            <ion-card-content>
+              <ion-icon name="cube-outline"></ion-icon>
+              <h2>{{ totalDonations }}</h2>
+              <p>Total Donations</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col size="6" size-md="3">
+          <ion-card class="kpi-card">
+            <ion-card-content>
+              <ion-icon name="checkmark-done-outline"></ion-icon>
+              <h2>{{ delivered }}</h2>
+              <p>Delivered</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col size="6" size-md="3">
+          <ion-card class="kpi-card">
+            <ion-card-content>
+              <ion-icon name="trending-up-outline"></ion-icon>
+              <h2>{{ successRate }}%</h2>
+              <p>Delivery Success Rate</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col size="6" size-md="3">
+          <ion-card class="kpi-card">
+            <ion-card-content>
+              <ion-icon name="time-outline"></ion-icon>
+              <h2>{{ avgDeliveryHours !== null ? (avgDeliveryHours | number:'1.1-1') + ' hrs' : '—' }}</h2>
+              <p>Avg Delivery Time</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-md="7">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Donations Over Time</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <canvas id="areaDonationsLine"></canvas>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col size="12" size-md="5">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>By Status</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <canvas id="areaStatusPie"></canvas>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Top Volunteers</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list *ngIf="leaderboard.length > 0">
+          <ion-item *ngFor="let entry of leaderboard">
+            <ion-label>{{ entry.username }}</ion-label>
+            <ion-note slot="end">{{ entry.delivered }} delivered</ion-note>
+          </ion-item>
+        </ion-list>
+        <p *ngIf="leaderboard.length === 0">No delivery activity yet.</p>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+</ion-content>

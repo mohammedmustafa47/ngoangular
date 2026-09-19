@@ -1,0 +1,16 @@
+.area-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.area-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.muted {
+  color: var(--ion-color-medium);
+}

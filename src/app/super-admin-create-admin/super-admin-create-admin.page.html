@@ -1,0 +1,70 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/super-admin-dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Create Area Admin</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <!-- Success panel: credentials to hand off out-of-band, no invite-link flow yet -->
+  <ion-card *ngIf="created" class="created-card">
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="checkmark-circle" color="success"></ion-icon>
+        Area Admin Created
+      </ion-card-title>
+      <ion-card-subtitle>Share these credentials with them directly — there's no invite-link email for this.</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="cred-row"><span class="label">Username</span><strong>{{ created.username }}</strong></div>
+      <div class="cred-row"><span class="label">Email</span><strong>{{ created.email }}</strong></div>
+      <div class="cred-row"><span class="label">Password</span><strong>{{ created.password }}</strong></div>
+      <div class="cred-row"><span class="label">Area</span><strong>{{ created.area }}</strong></div>
+      <ion-button expand="block" fill="outline" (click)="createAnother()">
+        <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+        Create Another
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Create form -->
+  <ion-card *ngIf="!created">
+    <ion-card-header>
+      <ion-card-title>New Area Admin</ion-card-title>
+      <ion-card-subtitle>Account is created active and verified immediately — no OTP step.</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-label position="floating">Username</ion-label>
+        <ion-input type="text" [(ngModel)]="username" placeholder="e.g. admin_murudeshwar"></ion-input>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label position="floating">Email</ion-label>
+        <ion-input type="email" [(ngModel)]="email" placeholder="example@gmail.com"></ion-input>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label position="floating">Password</ion-label>
+        <ion-input type="text" [(ngModel)]="password" placeholder="Set a password to hand off"></ion-input>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label position="floating">Area</ion-label>
+        <ion-select [(ngModel)]="areaId" placeholder="Select an area" interface="popover" [disabled]="loading">
+          <ion-select-option *ngFor="let area of areas" [value]="area.id">{{ area.name }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <p class="muted" *ngIf="!loading && areas.length === 0">
+        No areas exist yet — <a routerLink="/super-admin-areas">create one first</a>.
+      </p>
+
+      <ion-button expand="block" [disabled]="creating || loading" (click)="createAdmin()">
+        <ion-icon name="person-add-outline" slot="start"></ion-icon>
+        Create Area Admin
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

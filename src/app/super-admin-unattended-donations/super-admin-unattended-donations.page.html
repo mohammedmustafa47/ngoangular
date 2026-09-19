@@ -1,0 +1,34 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/super-admin-dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Unattended Donations</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="load()">
+        <ion-icon name="refresh-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <div *ngIf="loading" class="ion-text-center ion-padding">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <p *ngIf="!loading && donations.length === 0" class="ion-text-center muted">
+    Nothing here - every pending donation has an active Area Admin.
+  </p>
+
+  <ion-card *ngFor="let d of donations">
+    <ion-card-content>
+      <h2>{{ d.item_name }} ({{ d.quantity }})</h2>
+      <p class="muted">{{ d.pickup_address }} &middot; {{ d.pickup_pincode }}</p>
+      <p class="muted">Donor: {{ d.donor_name }} &middot; {{ d.contact_number }}</p>
+      <ion-badge color="warning">No active Area Admin</ion-badge>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

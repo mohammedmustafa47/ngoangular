@@ -1,0 +1,46 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/super-admin-dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Pending Signups</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="loadAll()">
+        <ion-icon name="refresh-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <div *ngIf="loading" class="ion-text-center ion-padding">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <p *ngIf="!loading && pendingUsers.length === 0" class="ion-text-center muted">
+    No pending signups — every user has an area.
+  </p>
+
+  <ion-card *ngFor="let user of pendingUsers">
+    <ion-card-content>
+      <div class="user-row">
+        <div>
+          <h2>{{ user.username }}</h2>
+          <p class="muted">{{ user.email }}</p>
+          <ion-badge color="medium">{{ user.role | titlecase }}</ion-badge>
+        </div>
+        <div class="assign-controls">
+          <ion-select [(ngModel)]="selectedAreaId[user.id]" placeholder="Select area" interface="popover">
+            <ion-select-option *ngFor="let area of areas" [value]="area.id">{{ area.name }}</ion-select-option>
+          </ion-select>
+          <ion-button size="small" [disabled]="assigning[user.id]" (click)="assign(user)">
+            <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+            Assign to Area
+          </ion-button>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

@@ -1,0 +1,30 @@
+.nav-cards {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  ion-button {
+    flex: 1;
+    margin: 0;
+  }
+}
+
+.kpi-card {
+  text-align: center;
+
+  ion-icon {
+    font-size: 28px;
+    color: var(--ion-color-primary);
+  }
+
+  h2 {
+    margin: 8px 0 0;
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 4px 0 0;
+    color: var(--ion-color-medium);
+  }
+}

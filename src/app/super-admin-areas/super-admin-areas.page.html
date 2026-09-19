@@ -1,0 +1,86 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/super-admin-dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Areas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <!-- Create Area -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Open a New Town</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-label position="floating">Area Name</ion-label>
+        <ion-input type="text" [(ngModel)]="newAreaName" placeholder="e.g. Murudeshwar"></ion-input>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label position="floating">Pincodes (comma-separated)</ion-label>
+        <ion-input type="text" [(ngModel)]="newAreaPincodes" placeholder="e.g. 581342, 581343"></ion-input>
+      </ion-item>
+      <ion-button expand="block" [disabled]="creating" (click)="createArea()">
+        <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+        Create Area
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Areas List -->
+  <div *ngIf="loading" class="ion-text-center ion-padding">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <ion-card *ngFor="let area of areas">
+    <ion-card-content *ngIf="editingAreaId !== area.id">
+      <div class="area-row">
+        <div>
+          <h2>{{ area.name }}</h2>
+          <p class="muted">Pincodes: {{ (area.pincodes || []).join(', ') || 'None' }}</p>
+          <ion-badge [color]="area.is_active ? 'success' : 'medium'">{{ area.is_active ? 'Active' : 'Inactive' }}</ion-badge>
+        </div>
+        <div class="area-actions">
+          <ion-button size="small" fill="outline" (click)="startEdit(area)">
+            <ion-icon name="create-outline" slot="start"></ion-icon>
+            Edit
+          </ion-button>
+          <ion-button size="small" fill="outline" color="danger" (click)="deleteArea(area)">
+            <ion-icon name="trash-outline" slot="start"></ion-icon>
+            Delete
+          </ion-button>
+        </div>
+      </div>
+    </ion-card-content>
+
+    <ion-card-content *ngIf="editingAreaId === area.id">
+      <ion-item lines="none">
+        <ion-label position="floating">Area Name</ion-label>
+        <ion-input type="text" [(ngModel)]="editName"></ion-input>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label position="floating">Pincodes (comma-separated)</ion-label>
+        <ion-input type="text" [(ngModel)]="editPincodes"></ion-input>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>Active</ion-label>
+        <ion-toggle [(ngModel)]="editIsActive"></ion-toggle>
+      </ion-item>
+      <div class="area-actions">
+        <ion-button size="small" (click)="saveEdit(area)">
+          <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+          Save
+        </ion-button>
+        <ion-button size="small" fill="outline" color="medium" (click)="cancelEdit()">
+          Cancel
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <p *ngIf="!loading && areas.length === 0" class="ion-text-center muted">No areas yet — create one above.</p>
+
+</ion-content>
