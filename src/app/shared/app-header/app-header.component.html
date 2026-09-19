@@ -1,0 +1,11 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>{{ title }}</ion-title>
+    <ion-buttons slot="end">
+      <!-- Extension point: pages can project extra toolbar buttons here (e.g. a future Settings icon)
+           without any change to this shared component. -->
+      <ng-content select="[header-actions]"></ng-content>
+      <ion-menu-button [menu]="menuId" autoHide="false"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
