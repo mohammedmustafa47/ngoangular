@@ -1,0 +1,11 @@
+#!/bin/sh
+# Food4U guardrail (rule 2): only the owner runs git commands that change the repo.
+# This hook runs on every ref update (commit, merge, pull, fetch, reset, rebase, tag,
+# branch) and cannot be skipped with --no-verify. It only blocks AI agents, which set
+# one of the variables below in their shells; the owner's own terminal is unaffected.
+[ "$1" = "prepared" ] || exit 0
+if [ -n "$AI_AGENT$CLAUDECODE$CLAUDE_CODE_ENTRYPOINT$GEMINI_CLI$CODEX_SANDBOX$CODEX_SANDBOX_NETWORK_DISABLED$CURSOR_AGENT" ]; then
+  echo "[Food4U guardrail] Git commands that change the repository are run by the project owner only. Ask the owner to run this command." >&2
+  exit 1
+fi
+exit 0

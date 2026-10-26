@@ -1,0 +1,7 @@
+#!/bin/sh
+# Food4U guardrail (rule 2): AI agents may not push. The owner's own terminal is unaffected.
+if [ -n "$AI_AGENT$CLAUDECODE$CLAUDE_CODE_ENTRYPOINT$GEMINI_CLI$CODEX_SANDBOX$CODEX_SANDBOX_NETWORK_DISABLED$CURSOR_AGENT" ]; then
+  echo "[Food4U guardrail] Pushing is done by the project owner only. Ask the owner to run: git push" >&2
+  exit 1
+fi
+exit 0
