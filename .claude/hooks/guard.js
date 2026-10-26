@@ -7,6 +7,7 @@ const path = require('path');
 
 const BACKEND_DIR = 'c:/users/musta/onedrive/desktop/djangoauth';
 const EXTRA_ROOTS = [
+  'c:/users/musta/onedrive/desktop/ngoangular', // frontend (for backend sessions)
   'c:/users/musta/appdata/local/temp/claude', // session scratchpad
   'c:/users/musta/.claude/projects/c--users-musta-onedrive-desktop-ngoangular', // Claude memory
 ];
@@ -21,7 +22,7 @@ const norm = p => {
 const inside = (p, roots) => roots.some(r => p === r || p.startsWith(r + '/'));
 
 const SECRET_RE = /(^|[\/\s"'=])(\.env(?!\.example)(\.[\w.-]+)?|[\w.-]+\.(jks|keystore|pem|p12|pfx|key)|google-services\.json|id_(rsa|ed25519)[\w.]*|credentials\.json|zappa_settings\.json)(?=$|[\s"'\/;|&)<>])/i;
-const PROTECTED_RE = /(\.claude\/(settings(\.local)?\.json|hooks(\/|$))|\.git\/hooks(\/|$)|\.cursor\/(hooks|cli)|\.codex\/|\.vscode\/settings\.json)/i;
+const PROTECTED_RE = /(\.claude\/(settings(\.local)?\.json|hooks(\/|$))|\.git\/hooks(\/|$)|(^|\/)githooks(\/|$)|\.cursor\/(hooks|cli)|\.codex\/|\.vscode\/settings\.json)/i;
 const CONFIG_RE = /(^|\/)(angular\.json|package(-lock)?\.json|capacitor\.config\.ts|tsconfig[\w.]*\.json|settings\.py|requirements\.txt|pipfile(\.lock)?|agents\.md|claude\.md|gemini\.md|\.gitignore|[\w.-]+\.gradle)$/i;
 const MIGRATION_RE = /\/migrations\/[^/]+\.py$/i;
 
@@ -29,7 +30,7 @@ const GIT_WRITE_RE = /\bgit(\.exe)?["']?\s+(-[cC]\s+\S+\s+|--?[\w-]+(=\S+)?\s+)*
 const GH_RE = /(^|[\s;&|("'])gh(\.exe)?\s+\w/i;
 const NO_VERIFY_RE = /--no-verify|core\.hooksPath/i;
 const DELETE_RE = /(^|[\s;&|("'])(rm|rmdir|rd|del|erase|unlink|ri)\s|remove-item|clear-content|-delete\b|rmtree|os\.remove|os\.unlink|fs\.(rm|unlink|rmdir)|shutil\.move/i;
-const DB_RE = /manage\.py["']?\s+(migrate|makemigrations|flush|sqlflush|dbshell|loaddata|squashmigrations|reset_db|shell|createsuperuser|sqlmigrate)|(^|[\s;&|("'])(psql|dropdb|createdb|pg_restore|pg_dump|mysql|mysqldump|mysqladmin|sqlite3)(\.exe)?\b|\b(drop\s+(table|database|schema)|truncate\s+table|delete\s+from|alter\s+table)\b/i;
+const DB_RE = /manage\.py["']?\s+(migrate|makemigrations|flush|sqlflush|dbshell|loaddata|squashmigrations|reset_db|shell|createsuperuser|sqlmigrate|test)|(^|[\s;&|("'])(psql|dropdb|createdb|pg_restore|pg_dump|mysql|mysqldump|mysqladmin|sqlite3)(\.exe)?\b|\b(drop\s+(table|database|schema)|truncate\s+table|delete\s+from|alter\s+table)\b/i;
 const PACKAGE_RE = /\b(npm|pnpm|yarn)(\.cmd)?\s+(i|install|add|uninstall|remove|rm|un|update|upgrade|up|ci|link|audit\s+fix|dedupe|prune)\b|\bpip3?\s+(install|uninstall)|-m\s+pip\s+(install|uninstall)|\bpipenv\s+(install|uninstall|update|lock)|\bng\s+(update|add)\b/i;
 const RELEASE_RE = /\bcap\s+(sync|copy|update|run|open|add)\b|gradlew(\.bat)?\s+[^;&|]*(assemble|bundle|publish|install|sign)|\bkeytool\b|\bjarsigner\b|\bapksigner\b|\bzappa\s+(deploy|update|undeploy|certify)/i;
 const OUTSIDE_HINT_RE = /(^|[\s"'=(])~[\/\\]|\$home\b|\$env:(userprofile|appdata|localappdata|homepath)|%(userprofile|appdata|localappdata|homepath)%/i;
